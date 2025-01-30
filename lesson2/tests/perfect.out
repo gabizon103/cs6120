@@ -1,0 +1,14 @@
+main
+8 blocks
+2
+4
+7
+func main
+main_for.end: 1
+main_for.body: 1
+main_if.body: 1
+main_for.incre: 2
+main_for.cond.1: 2
+main_if.success: 1
+main_if.failure.end: 2
+

@@ -1,0 +1,16 @@
+main
+7 blocks
+6
+4
+func main
+main_for.body.6: 1
+main_for.end.6: 1
+main_then.11: 1
+main_else.11: 1
+main_endif.11: 2
+main_for.cond.6: 2
+
+mod
+1 blocks
+func mod
+

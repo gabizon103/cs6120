@@ -1,0 +1,26 @@
+main
+7 blocks
+6
+4
+func main
+main_for.body.1: 1
+main_for.end.1: 1
+main_then.7: 1
+main_else.7: 1
+main_endif.7: 2
+main_for.cond.1: 2
+
+checkPrime
+8 blocks
+2
+7
+6
+func checkPrime
+checkPrime_then.0: 1
+checkPrime_endif.0: 1
+checkPrime_for.body.5: 1
+checkPrime_for.end.5: 1
+checkPrime_then.18: 1
+checkPrime_endif.18: 1
+checkPrime_for.cond.5: 2
+

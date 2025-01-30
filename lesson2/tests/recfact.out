@@ -1,0 +1,11 @@
+main
+1 blocks
+func main
+
+fac
+4 blocks
+3
+func fac
+fac_then.0: 1
+fac_endif.0: 2
+

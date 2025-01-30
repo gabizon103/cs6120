@@ -1,0 +1,19 @@
+main
+12 blocks
+11
+7
+5
+9
+func main
+main_for.body.0: 1
+main_for.end.0: 1
+main_then.21: 1
+main_else.21: 1
+main_then.23: 1
+main_else.23: 1
+main_endif.23: 2
+main_then.33: 1
+main_else.33: 1
+main_endif.21: 3
+main_for.cond.0: 2
+

@@ -1,0 +1,16 @@
+main
+1 blocks
+func main
+
+up_arrow
+7 blocks
+6
+4
+func up_arrow
+up_arrow_loopbody: 1
+up_arrow_endloop: 1
+up_arrow_base: 1
+up_arrow_arrowsgreaterthan1: 1
+up_arrow_finally: 2
+up_arrow_loopstart: 2
+

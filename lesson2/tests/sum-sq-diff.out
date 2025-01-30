@@ -1,0 +1,20 @@
+sumOfSquares
+4 blocks
+3
+func sumOfSquares
+sumOfSquares_for.body.1: 1
+sumOfSquares_for.end.1: 1
+sumOfSquares_for.cond.1: 2
+
+squareOfSum
+4 blocks
+3
+func squareOfSum
+squareOfSum_for.body.1: 1
+squareOfSum_for.end.1: 1
+squareOfSum_for.cond.1: 2
+
+main
+1 blocks
+func main
+

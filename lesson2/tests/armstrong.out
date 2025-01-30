@@ -1,0 +1,27 @@
+main
+4 blocks
+3
+func main
+main_body: 1
+main_done: 1
+main_loop: 2
+
+getDigits
+3 blocks
+2
+func getDigits
+getDigits_then: 1
+getDigits_else: 1
+
+mod
+1 blocks
+func mod
+
+power
+4 blocks
+2
+func power
+power_done: 1
+power_body: 1
+power_loop: 2
+

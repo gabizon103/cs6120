@@ -1,0 +1,12 @@
+[package]
+name = "lesson2"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+argh.workspace = true
+serde_json.workspace = true
+bril-rs.workspace = true
+itertools.workspace = true
+graphviz-rust.workspace = true
+linked-hash-map.workspace = true

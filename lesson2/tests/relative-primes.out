@@ -1,0 +1,32 @@
+main
+1 blocks
+func main
+
+mod
+1 blocks
+func mod
+
+gcd
+9 blocks
+2
+5
+8
+func gcd
+gcd_then.0: 1
+gcd_endif.0: 2
+gcd_then.7: 1
+gcd_else.7: 1
+gcd_then.12: 1
+gcd_endif.7: 3
+
+relative_primes
+6 blocks
+5
+4
+func relative_primes
+relative_primes_for.body.0: 1
+relative_primes_for.end.0: 1
+relative_primes_then.7: 1
+relative_primes_endif.7: 2
+relative_primes_for.cond.0: 2
+

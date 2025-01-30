@@ -1,0 +1,18 @@
+main
+7 blocks
+2
+3
+2
+5
+func main
+main_neg: 1
+main_end: 1
+main_check: 1
+main_body: 1
+main_then: 1
+main_begin: 5
+
+mod
+1 blocks
+func mod
+

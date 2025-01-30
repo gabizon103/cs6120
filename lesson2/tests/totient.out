@@ -1,0 +1,25 @@
+main
+1 blocks
+func main
+
+totient
+10 blocks
+7
+6
+5
+9
+func totient
+totient_for.set.body: 1
+totient_for.set.end: 1
+totient_while.body: 1
+totient_while.end: 1
+totient_while.set.cond: 2
+totient_else_lbl: 2
+totient_for.set.cond: 2
+totient_final_if_label: 1
+totient_final_else_label: 2
+
+mod
+1 blocks
+func mod
+

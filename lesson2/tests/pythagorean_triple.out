@@ -1,0 +1,13 @@
+main
+7 blocks
+4
+2
+1
+func main
+main_found: 1
+main_inner_continue: 2
+main_outer_continue: 1
+main_inner_loop: 2
+main_finish: 1
+main_outer_loop: 2
+

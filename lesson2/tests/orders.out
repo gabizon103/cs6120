@@ -1,0 +1,44 @@
+abs
+3 blocks
+2
+func abs
+abs_mul_neg_one: 1
+abs_abs_res: 2
+
+mod
+1 blocks
+func mod
+
+gcd
+3 blocks
+1
+func gcd
+gcd_while.finish: 1
+gcd_while.body: 1
+gcd_while.cond: 1
+
+lcm
+4 blocks
+3
+3
+func lcm
+lcm_check_b: 1
+lcm_special_case: 1
+lcm_is_good: 2
+
+orders
+6 blocks
+1
+3
+func orders
+orders_for.finish: 1
+orders_for.body: 1
+orders_lcm: 1
+orders_gcd: 1
+orders_for.body.print: 2
+orders_for.cond: 1
+
+main
+1 blocks
+func main
+

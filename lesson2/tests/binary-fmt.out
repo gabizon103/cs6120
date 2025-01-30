@@ -1,0 +1,15 @@
+main
+1 blocks
+func main
+
+printBinary
+3 blocks
+1
+func printBinary
+printBinary_rec: 1
+printBinary_end: 2
+
+mod
+1 blocks
+func mod
+

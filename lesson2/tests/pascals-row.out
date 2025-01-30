@@ -1,0 +1,12 @@
+main
+1 blocks
+func main
+
+generateNthRow
+4 blocks
+3
+func generateNthRow
+generateNthRow_for.body.3: 1
+generateNthRow_for.end.3: 1
+generateNthRow_for.cond.3: 2
+

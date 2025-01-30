@@ -1,0 +1,12 @@
+main
+7 blocks
+2
+4
+func main
+main_end: 1
+main_loop: 1
+main_even: 1
+main_odd: 1
+main_print: 3
+main_cond: 1
+

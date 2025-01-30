@@ -1,0 +1,14 @@
+ack
+5 blocks
+2
+4
+func ack
+ack_m_zero: 1
+ack_m_nonzero: 1
+ack_n_zero: 1
+ack_n_nonzero: 1
+
+main
+1 blocks
+func main
+

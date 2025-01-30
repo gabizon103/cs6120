@@ -1,0 +1,20 @@
+main
+1 blocks
+func main
+
+is_decreasing
+8 blocks
+7
+5
+func is_decreasing
+is_decreasing_label5: 1
+is_decreasing_label6: 1
+is_decreasing_label11: 1
+is_decreasing_label12: 1
+is_decreasing_label13: 2
+is_decreasing_label4: 2
+
+last_digit
+1 blocks
+func last_digit
+

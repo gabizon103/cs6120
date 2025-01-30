@@ -1,0 +1,15 @@
+main
+1 blocks
+func main
+
+catalan
+6 blocks
+2
+5
+func catalan
+catalan_if: 1
+catalan_else: 1
+catalan_while.body: 1
+catalan_while.end: 1
+catalan_while: 2
+

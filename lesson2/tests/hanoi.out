@@ -1,0 +1,11 @@
+hanoi
+3 blocks
+2
+func hanoi
+hanoi_then: 1
+hanoi_else: 2
+
+main
+1 blocks
+func main
+

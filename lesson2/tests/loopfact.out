@@ -1,0 +1,8 @@
+main
+4 blocks
+3
+func main
+main_for.body.2: 1
+main_for.end.2: 1
+main_for.cond.2: 2
+

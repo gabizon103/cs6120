@@ -1,0 +1,15 @@
+main
+9 blocks
+3
+5
+7
+func main
+main_if.1: 1
+main_else.1: 1
+main_loop.bound: 2
+main_program.end: 1
+main_update.val: 1
+main_if.2: 1
+main_else.2: 1
+main_cmp.val: 3
+

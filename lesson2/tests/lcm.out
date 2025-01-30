@@ -1,0 +1,15 @@
+main
+6 blocks
+2
+4
+func main
+main_then.1: 1
+main_then.2: 1
+main_else.2: 1
+main_loopend: 1
+main_foreverloop: 3
+
+getMod
+1 blocks
+func getMod
+

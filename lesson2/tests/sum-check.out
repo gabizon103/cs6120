@@ -1,0 +1,16 @@
+main
+1 blocks
+func main
+
+sum_by_loop
+4 blocks
+3
+func sum_by_loop
+sum_by_loop_for: 1
+sum_by_loop_end: 1
+sum_by_loop_for_start: 2
+
+sum_by_formula
+1 blocks
+func sum_by_formula
+

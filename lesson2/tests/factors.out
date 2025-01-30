@@ -1,0 +1,11 @@
+main
+6 blocks
+5
+4
+func main
+main_loopbody: 1
+main_loopend: 1
+main_ifyes: 1
+main_ifno: 1
+main_loopcheck: 3
+

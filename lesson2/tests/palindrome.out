@@ -1,0 +1,33 @@
+main
+6 blocks
+5
+4
+func main
+main_for.body: 1
+main_for.end: 1
+main_if.true: 1
+main_if.false: 1
+main_for.cond: 3
+
+pow
+6 blocks
+5
+4
+func pow
+pow_for.body.pow: 1
+pow_for.end.pow: 1
+pow_if.true.pow: 1
+pow_if.false.pow: 1
+pow_for.cond.pow: 3
+
+palindrome
+6 blocks
+2
+4
+func palindrome
+palindrome_if.true.palindrome: 1
+palindrome_if.false.palindrome: 1
+palindrome_if.true.mirror: 1
+palindrome_if.false.mirror: 1
+palindrome_if.end.palindrome: 3
+

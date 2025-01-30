@@ -1,0 +1,11 @@
+main
+1 blocks
+func main
+
+fact
+3 blocks
+2
+func fact
+fact_then.0: 1
+fact_else.0: 1
+

@@ -1,0 +1,19 @@
+main
+1 blocks
+func main
+
+sqrt
+6 blocks
+5
+4
+func sqrt
+sqrt_for.body.0: 1
+sqrt_for.end.0: 1
+sqrt_then.7: 1
+sqrt_endif.7: 1
+sqrt_for.cond.0: 2
+
+quadratic
+1 blocks
+func quadratic
+

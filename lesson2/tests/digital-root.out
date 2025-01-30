@@ -1,0 +1,19 @@
+main
+6 blocks
+3
+1
+func main
+main_check_done: 1
+main_process_result: 1
+main_check_result: 2
+main_done: 1
+main_begin: 2
+
+is_single_digit
+1 blocks
+func is_single_digit
+
+peel_last_digit
+1 blocks
+func peel_last_digit
+

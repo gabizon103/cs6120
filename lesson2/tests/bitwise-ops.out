@@ -1,0 +1,41 @@
+mod2
+1 blocks
+func mod2
+
+loop_subroutine
+8 blocks
+7
+4
+6
+func loop_subroutine
+loop_subroutine_here: 1
+loop_subroutine_end: 1
+loop_subroutine_doOr: 1
+loop_subroutine_stay: 2
+loop_subroutine_add: 1
+loop_subroutine_end_loop: 2
+loop_subroutine_loop: 2
+
+OR
+1 blocks
+func OR
+
+AND
+1 blocks
+func AND
+
+XOR
+1 blocks
+func XOR
+
+main
+6 blocks
+1
+4
+func main
+main_and_op: 1
+main_useless_lbl: 1
+main_or_op: 1
+main_xor_op: 1
+main_end: 3
+

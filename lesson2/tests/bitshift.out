@@ -1,0 +1,27 @@
+pow
+6 blocks
+2
+4
+func pow
+pow_then.0: 1
+pow_else.0: 1
+pow_then.12: 1
+pow_else.12: 1
+pow_endif.12: 2
+
+mod
+1 blocks
+func mod
+
+LEFTSHIFT
+1 blocks
+func LEFTSHIFT
+
+RIGHTSHIFT
+1 blocks
+func RIGHTSHIFT
+
+main
+1 blocks
+func main
+

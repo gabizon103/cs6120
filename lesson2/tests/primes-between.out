@@ -1,0 +1,26 @@
+main
+14 blocks
+2
+13
+10
+9
+12
+func main
+main_true: 1
+main_false: 1
+main_for.outer.body: 1
+main_for.outer.end: 1
+main_for.inner.init: 1
+main_for.inner.body: 1
+main_if.inner.body: 1
+main_if.inner.end: 1
+main_for.inner.end: 2
+main_for.inner.cond: 2
+main_if.outer.body: 1
+main_if.outer.end: 2
+main_for.outer.cond: 3
+
+mod
+1 blocks
+func mod
+
