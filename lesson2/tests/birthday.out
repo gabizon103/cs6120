@@ -1,0 +1,12 @@
+main
+1 blocks
+func main
+
+probability
+4 blocks
+3
+func probability
+probability_for.body.1: 1
+probability_for.end.1: 1
+probability_for.cond.1: 2
+
