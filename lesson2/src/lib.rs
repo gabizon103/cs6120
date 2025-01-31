@@ -108,6 +108,7 @@ pub fn form_blocks_from_read<R: std::io::Read>(
         .collect()
 }
 
+#[derive(Clone)]
 pub enum Edge {
     Uncond(usize),
     Cond { true_targ: usize, false_targ: usize },
@@ -140,9 +141,9 @@ impl std::fmt::Display for ControlFlow {
 #[derive(Default)]
 pub struct ControlFlow {
     pub name: String,
-    blocks: Vec<BasicBlock>,
-    edges: Vec<Edge>,
-    lbl_to_block: HashMap<String, usize>,
+    pub blocks: Vec<BasicBlock>,
+    pub edges: Vec<Edge>,
+    pub lbl_to_block: HashMap<String, usize>,
 }
 
 impl ControlFlow {
