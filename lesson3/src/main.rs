@@ -1,4 +1,5 @@
 mod dce;
+mod lvn;
 use std::{fs::File, path::PathBuf};
 
 use argh::FromArgs;
@@ -10,7 +11,8 @@ use graphviz_rust::{
     printer::{DotPrinter, PrinterContext},
 };
 use itertools::Itertools;
-use lesson2::{form_blocks_from_read, ControlFlow};
+use lesson2::{form_blocks_from_read, CFGProgram, ControlFlow, FlatProgram};
+use lvn::LocalValueNumbering;
 
 /// Build cfg from bril program
 #[derive(FromArgs)]
@@ -34,18 +36,22 @@ fn main() {
         || -> Box<dyn std::io::Read> { Box::new(std::io::stdin()) },
         |f| Box::new(File::open(f).unwrap()),
     );
-    let all_blocks = form_blocks_from_read(input);
+    let (all_blocks, orig_program) = form_blocks_from_read(input);
     let cfgs = all_blocks
         .into_iter()
-        .map(|(name, blocks, map)| {
-            let mut cfg = ControlFlow::new(name, blocks, map);
+        .map(|(name, blocks, map, args)| {
+            let mut cfg = ControlFlow::new(name, blocks, map, args);
             cfg.build();
             cfg
         })
         .map(|cfg| {
+            let mut lvn = LocalValueNumbering::new();
+            lvn.cfg.name = cfg.name.clone();
             let mut dce = DeadCodeElim::new();
-            dce.do_pass(&cfg);
-            dce.cfg
+            lvn.do_pass(&cfg);
+            dce.do_pass(&lvn.cfg);
+            let cfg = dce.cfg;
+            cfg
         })
         .collect_vec();
 
@@ -70,4 +76,22 @@ fn main() {
         )
         .unwrap();
     }
+
+    let program = CFGProgram { functions: cfgs };
+    let mut program_flat = program.flatten_blocks();
+    program_flat.iter_mut().for_each(|func| {
+        let name = &func.name;
+        for orig_func in &orig_program.functions {
+            if *name == orig_func.name {
+                func.args = orig_func.args.clone();
+                func.return_type = orig_func.return_type.clone();
+            }
+        }
+    });
+
+    let flat_program = FlatProgram {
+        functions: program_flat,
+    };
+    let program_str = serde_json::to_string(&flat_program).unwrap();
+    println!("{program_str}")
 }

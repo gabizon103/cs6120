@@ -11,3 +11,6 @@ bril-rs.workspace = true
 itertools.workspace = true
 graphviz-rust.workspace = true
 linked-hash-map.workspace = true
+rust_decimal = "1.36.0"
+bigdecimal = "0.4.7"
+ordered-float = "4.6.0"

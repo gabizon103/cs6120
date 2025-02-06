@@ -1,13 +1,14 @@
 pub mod stat;
-use bril_rs::{Code, Function, Instruction, Program};
+use bril_rs::{Argument, Code, Function, Instruction, Program, Type};
 use graphviz_rust::dot_structures::{
     Attribute, Edge as VizEdge, EdgeTy, Id, Node, NodeId, Stmt, Subgraph, Vertex,
 };
 use itertools::Itertools;
 use serde_json;
 use std::collections::HashMap;
+use serde::{Deserialize, Serialize};
 
-#[derive(Default, Clone, Debug)]
+#[derive(Default, Clone, Debug, Serialize, Deserialize)]
 pub struct BasicBlock {
     pub name: String,
     pub instrs: Vec<Instruction>,
@@ -22,6 +23,10 @@ impl BasicBlock {
             node_{idx} [shape="{oval}"][label="{node}"]
         "##
         )
+    }
+
+    pub fn to_json(&self) -> String {
+        serde_json::to_string(&self.instrs).unwrap()
     }
 }
 
@@ -68,11 +73,15 @@ fn build_blocks(func: Function) -> (String, Vec<BasicBlock>, HashMap<String, usi
     for code in &func.instrs {
         match code {
             Code::Label { label, .. } => {
-                if !block.instrs.is_empty() {
+                // if !block.instrs.is_empty() {
+                //     blocks.push(block.clone());
+                //     block = BasicBlock::default();
+                // }
+                if block.name != "" {
                     blocks.push(block.clone());
                     block = BasicBlock::default();
                 }
-                block.name = format!("{}_{}", name.clone(), label.to_string());
+                block.name = format!("{}", label.to_string());
                 let idx = blocks.len();
                 label_to_block.insert(label.to_string(), idx);
             }
@@ -94,18 +103,21 @@ fn build_blocks(func: Function) -> (String, Vec<BasicBlock>, HashMap<String, usi
 pub fn form_blocks_from_read<R: std::io::Read>(
     mut input: R,
     // file_name: Option<PathBuf>,
-) -> Vec<(String, Vec<BasicBlock>, HashMap<String, usize>)> {
+) -> (Vec<(String, Vec<BasicBlock>, HashMap<String, usize>, Vec<Argument>)>, Program) {
     let mut buf = String::new();
     input.read_to_string(&mut buf).unwrap();
 
     let program: Program =
         serde_json::from_str(&buf).expect("couldn't parse json into bril program");
 
-    program
+    (program.clone()
         .functions
         .into_iter()
-        .map(|func| build_blocks(func))
-        .collect()
+        .map(|func| {
+            let (name, blocks, lbl_to_block) = build_blocks(func.clone());
+            (name, blocks, lbl_to_block, func.args)
+         })
+        .collect(), program)
 }
 
 #[derive(Clone)]
@@ -138,12 +150,60 @@ impl std::fmt::Display for ControlFlow {
     }
 }
 
-#[derive(Default)]
+#[derive(Default, Serialize, Deserialize)]
+pub struct CFGProgram {
+    pub functions: Vec<ControlFlow>
+}
+
+impl CFGProgram {
+    pub fn to_json(&self) -> String {
+        serde_json::to_string(&self).unwrap()
+    }
+
+    pub fn flatten_blocks(&self) -> Vec<FlatFunction> {
+        self.functions.iter().map(|func|  {
+            FlatFunction {
+                name: func.name.clone(),
+                instrs: func.flatten_blocks(), 
+                args: vec![],
+                return_type: None
+            }
+        }).collect()
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct FlatProgram {
+    pub functions: Vec<FlatFunction>
+}
+
+impl FlatProgram {
+    pub fn to_json(&self) -> String {
+        serde_json::to_string(&self).unwrap()
+    }
+}
+
+#[derive(Serialize, Deserialize)]
+pub struct FlatFunction {
+    pub name: String,
+    pub instrs: Vec<Code>,
+    pub args: Vec<Argument>,
+    #[serde(rename = "type")]
+    #[serde(skip_serializing_if = "Option::is_none")]
+    pub return_type: Option<Type>
+}
+
+#[derive(Default, Serialize, Deserialize)]
 pub struct ControlFlow {
     pub name: String,
     pub blocks: Vec<BasicBlock>,
+    #[serde(skip_serializing)]
+    #[serde(skip_deserializing)]
     pub edges: Vec<Edge>,
+    #[serde(skip_serializing)]
+    #[serde(skip_deserializing)]
     pub lbl_to_block: HashMap<String, usize>,
+    pub args: Vec<Argument>
 }
 
 impl ControlFlow {
@@ -151,6 +211,7 @@ impl ControlFlow {
         name: String,
         blocks: Vec<BasicBlock>,
         lbl_to_block: HashMap<String, usize>,
+        args: Vec<Argument>
     ) -> Self {
         let mut edges = vec![];
         for _ in 0..blocks.len() {
@@ -161,7 +222,20 @@ impl ControlFlow {
             blocks,
             edges,
             lbl_to_block,
+            args
         }
+    }
+
+    pub fn flatten_blocks(&self) -> Vec<Code> {
+        let mut instrs = vec![];
+        self.blocks.iter().for_each(|block| {
+            let lbl = Code::Label { label: block.name.clone(), pos: None };
+            instrs.push(lbl);
+            block.instrs.iter().for_each(|instr| {
+                instrs.push(Code::Instruction(instr.clone()));
+            });
+        });
+        instrs
     }
 
     pub fn build(&mut self) {

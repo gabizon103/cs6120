@@ -31,11 +31,11 @@ fn main() {
         || -> Box<dyn std::io::Read> { Box::new(std::io::stdin()) },
         |f| Box::new(File::open(f).unwrap()),
     );
-    let all_blocks = form_blocks_from_read(input);
+    let (all_blocks, _) = form_blocks_from_read(input);
     let cfgs = all_blocks
         .into_iter()
-        .map(|(name, blocks, map)| {
-            let mut cfg = ControlFlow::new(name, blocks, map);
+        .map(|(name, blocks, map, args)| {
+            let mut cfg = ControlFlow::new(name, blocks, map, args);
             cfg.build();
             cfg
         })

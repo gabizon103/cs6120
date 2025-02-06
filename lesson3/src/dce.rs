@@ -1,6 +1,23 @@
-use std::collections::HashSet;
+use std::collections::{HashMap, HashSet};
 
+use bril_rs::{Argument, Instruction};
 use lesson2::{BasicBlock, ControlFlow};
+
+fn get_args(instr: &Instruction) -> Vec<String> {
+    match instr {
+        Instruction::Constant { dest, op, pos, const_type, value } => vec![],
+        Instruction::Value { args, dest, funcs, labels, op, pos, op_type } => args.to_vec(),
+        Instruction::Effect { args, funcs, labels, op, pos } => args.to_vec(),
+    }
+}
+
+fn get_dest(instr: &Instruction) -> Option<String> {
+    match instr {
+        Instruction::Constant { dest, op, pos, const_type, value } => Some(dest.to_string()),
+        Instruction::Value { args, dest, funcs, labels, op, pos, op_type } => Some(dest.to_string()),
+        Instruction::Effect { args, funcs, labels, op, pos } => None,
+    }
+}
 
 pub struct DeadCodeElim {
     pub cfg: ControlFlow,
@@ -14,7 +31,7 @@ impl DeadCodeElim {
     }
 
     /// Returns a set of the variables used in this block
-    fn get_vars(&self, block: &BasicBlock) -> HashSet<String> {
+    fn get_vars_used(&self, block: &BasicBlock) -> HashSet<String> {
         let mut vars = HashSet::new();
         block.instrs.iter().for_each(|instr| match instr {
             bril_rs::Instruction::Constant { .. } => (),
@@ -23,62 +40,91 @@ impl DeadCodeElim {
                     vars.insert(arg.clone());
                 });
             }
+            bril_rs::Instruction::Effect { args, .. } => args.iter().for_each(|arg| {
+                vars.insert(arg.clone());
+            }),
+        });
+        vars
+    }
+
+    fn get_vars_defd(&self, block: &BasicBlock) -> HashSet<String> {
+        let mut vars = HashSet::new();
+        block.instrs.iter().for_each(|instr| match instr {
+            bril_rs::Instruction::Constant { dest, .. } => {
+                vars.insert(dest.clone());
+            }
+            bril_rs::Instruction::Value { dest, .. } => {
+                vars.insert(dest.clone());
+            }
             _ => (),
         });
         vars
     }
 
-    /// Returns a new basic block and a flag indicating if we've removed anything, having done one iteration of dce
-    fn do_block(&mut self, block: &BasicBlock) -> (BasicBlock, bool) {
-        let mut used = self.get_vars(&block);
-        let mut to_remove: HashSet<usize> = HashSet::new();
-        block
-            .instrs
-            .iter()
-            .enumerate()
-            .rev()
-            .for_each(|(idx, instr)| match instr {
-                bril_rs::Instruction::Constant { dest, .. } => {
-                    if used.contains(dest) {
-                        used.remove(dest);
-                    } else {
-                        to_remove.insert(idx);
-                    }
-                }
-                bril_rs::Instruction::Value { dest, args, .. } => {
-                    if used.contains(dest) {
-                        used.remove(dest);
-                        args.iter().for_each(|arg| {
-                            used.insert(arg.to_string());
-                        })
-                    } else {
-                        to_remove.insert(idx);
-                    }
-                }
-                bril_rs::Instruction::Effect { args, .. } => args.iter().for_each(|arg| {
+    fn remove_unused(&mut self, func: &ControlFlow) -> (ControlFlow, bool) {
+        let mut used: HashSet<String> = HashSet::new();
+        let mut to_remove: HashSet<(usize, usize)> = HashSet::new();
+        func.blocks.iter().for_each(|block| {
+            block.instrs.iter().for_each(|instr| {
+                get_args(instr).iter().for_each(|arg| {
                     used.insert(arg.to_string());
-                }),
+                });
             });
-        let mut new_block = BasicBlock::default();
-        new_block.name = block.name.clone();
-        for idx in &to_remove {
-            println!("{idx}")
-        }
-        block.instrs.iter().enumerate().for_each(|(idx, instr)| {
-            if !to_remove.contains(&idx) {
-                new_block.instrs.push(instr.clone());
-            }
         });
-        (new_block, !to_remove.is_empty())
+
+        func.blocks.iter().enumerate().for_each(|(block_idx, block)| {
+            block.instrs.iter().enumerate().for_each(|(instr_idx, instr)| {
+                if let Some(dest) = get_dest(instr) {
+                    if !used.contains(&dest) {
+                        to_remove.insert((block_idx, instr_idx));
+                    }
+                }
+            })
+        });
+
+        let mut last_def: HashMap<String, (usize, usize)> = HashMap::new();
+        func.blocks.iter().enumerate().for_each(|(block_idx, block)| {
+            block.instrs.iter().enumerate().for_each(|(instr_idx, instr)| {
+                get_args(instr).iter().for_each(|arg| {
+                    last_def.remove(arg);
+                });
+                if let Some(dest) = get_dest(instr) {
+                    if let Some((b, i)) = last_def.get(&dest) {
+                        to_remove.insert((*b, *i));
+                        last_def.insert(dest, (block_idx, instr_idx));
+                    }
+                }
+            });
+        });
+
+        let mut blocks: Vec<BasicBlock> = Vec::default();
+        func.blocks.iter().enumerate().for_each(|(block_idx, block)| {
+            let mut new_block = BasicBlock::default();
+            new_block.name = block.name.clone();
+            block.instrs.iter().enumerate().for_each(|(instr_idx, instr)| {
+                if !to_remove.contains(&(block_idx, instr_idx)) {
+                    new_block.instrs.push(instr.clone());
+                }
+            });
+            blocks.push(new_block);
+        });
+
+        (ControlFlow {
+            name: func.name.clone(),
+            blocks,
+            edges: func.edges.clone(),
+            lbl_to_block: func.lbl_to_block.clone(),
+            args: func.args.clone(),
+        }, !to_remove.is_empty())
     }
 
     /// Perform dce to fixed point
-    fn do_block_iter(&mut self, block: &BasicBlock) -> BasicBlock {
-        let (mut block_dce, mut cont) = self.do_block(block);
+    fn remove_unused_iter(&mut self, func: &ControlFlow) -> ControlFlow {
+        let (mut cfg_dce, mut cont) = self.remove_unused(func);
         while cont {
-            (block_dce, cont) = self.do_block(&block_dce);
+            (cfg_dce, cont) = self.remove_unused(&cfg_dce);
         }
-        block_dce
+        cfg_dce
     }
 
     pub fn do_pass(&mut self, cfg: &ControlFlow) {
@@ -87,15 +133,9 @@ impl DeadCodeElim {
             blocks,
             edges,
             lbl_to_block,
+            args,
         } = cfg;
 
-        let blocks: Vec<BasicBlock> = blocks
-            .iter()
-            .map(|block| self.do_block_iter(block))
-            .collect();
-        self.cfg.blocks = blocks;
-        self.cfg.edges = edges.to_vec();
-        self.cfg.name = name.clone();
-        self.cfg.lbl_to_block = lbl_to_block.clone();
+        self.cfg = self.remove_unused_iter(cfg)
     }
 }

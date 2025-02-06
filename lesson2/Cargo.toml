@@ -10,3 +10,4 @@ bril-rs.workspace = true
 itertools.workspace = true
 graphviz-rust.workspace = true
 linked-hash-map.workspace = true
+serde = "1.0.217"
