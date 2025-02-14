@@ -1,0 +1,96 @@
+INS main
+block0 (main):
+n
+p
+
+block1 (for.cond.6):
+a
+two
+m
+p
+ans
+
+block2 (for.body.6):
+p
+ans
+a
+two
+m
+
+block3 (then.11):
+p
+a
+ans
+m
+two
+
+block4 (else.11):
+p
+ans
+two
+m
+a
+
+block5 (endif.11):
+p
+a
+ans
+two
+m
+
+block6 (for.end.6):
+ans
+
+OUTS main
+block0 (main):
+two
+ans
+m
+a
+p
+
+block1 (for.cond.6):
+a
+p
+ans
+two
+m
+
+block2 (for.body.6):
+m
+two
+p
+ans
+a
+
+block3 (then.11):
+p
+a
+ans
+m
+two
+
+block4 (else.11):
+two
+m
+ans
+a
+p
+
+block5 (endif.11):
+a
+two
+m
+p
+ans
+
+block6 (for.end.6):
+
+INS mod
+block0 (mod):
+n
+p
+
+OUTS mod
+block0 (mod):
+

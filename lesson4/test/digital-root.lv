@@ -1,0 +1,78 @@
+INS main
+block0 (main):
+input
+
+block1 (begin):
+result
+zero
+ten
+input
+
+block2 (check_result):
+zero
+ten
+result
+input
+
+block3 (process_result):
+ten
+input
+zero
+result
+
+block4 (check_done):
+ten
+result
+zero
+input
+
+block5 (done):
+result
+
+OUTS main
+block0 (main):
+input
+result
+ten
+zero
+
+block1 (begin):
+result
+zero
+ten
+input
+
+block2 (check_result):
+ten
+input
+result
+zero
+
+block3 (process_result):
+ten
+input
+zero
+result
+
+block4 (check_done):
+ten
+zero
+result
+input
+
+block5 (done):
+
+INS is_single_digit
+block0 (is_single_digit):
+input
+
+OUTS is_single_digit
+block0 (is_single_digit):
+
+INS peel_last_digit
+block0 (peel_last_digit):
+input
+
+OUTS peel_last_digit
+block0 (peel_last_digit):
+

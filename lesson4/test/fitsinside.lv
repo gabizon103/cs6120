@@ -1,0 +1,20 @@
+INS main
+block0 (main):
+width1
+height2
+width2
+height1
+
+OUTS main
+block0 (main):
+
+INS fitsInside
+block0 (fitsInside):
+w1
+h1
+h2
+w2
+
+OUTS fitsInside
+block0 (fitsInside):
+

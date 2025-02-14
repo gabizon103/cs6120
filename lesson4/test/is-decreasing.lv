@@ -1,0 +1,71 @@
+INS main
+block0 (main):
+x
+
+OUTS main
+block0 (main):
+
+INS is_decreasing
+block0 (is_decreasing):
+x
+
+block1 (label4):
+prev
+tmp
+
+block2 (label5):
+tmp
+prev
+
+block3 (label11):
+
+block4 ():
+tmp
+digit
+
+block5 (label12):
+digit
+tmp
+
+block6 (label13):
+tmp
+digit
+
+block7 (label6):
+
+OUTS is_decreasing
+block0 (is_decreasing):
+prev
+tmp
+
+block1 (label4):
+prev
+tmp
+
+block2 (label5):
+digit
+tmp
+
+block3 (label11):
+
+block4 ():
+tmp
+digit
+
+block5 (label12):
+digit
+tmp
+
+block6 (label13):
+tmp
+prev
+
+block7 (label6):
+
+INS last_digit
+block0 (last_digit):
+x
+
+OUTS last_digit
+block0 (last_digit):
+

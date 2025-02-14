@@ -1,0 +1,33 @@
+INS main
+block0 (main):
+
+block1 (loop_cond):
+ten
+i
+one
+
+block2 (loop_body):
+one
+ten
+i
+
+block3 (loop_end):
+
+OUTS main
+block0 (main):
+ten
+i
+one
+
+block1 (loop_cond):
+i
+one
+ten
+
+block2 (loop_body):
+one
+ten
+i
+
+block3 (loop_end):
+

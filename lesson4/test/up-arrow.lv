@@ -1,0 +1,109 @@
+INS main
+block0 (main):
+n
+arrows
+repeats
+
+OUTS main
+block0 (main):
+
+INS up_arrow
+block0 (up_arrow):
+arrows
+num
+repeats
+
+block1 (loopstart):
+num
+ans
+i
+one
+repeats
+arrows
+
+block2 (loopbody):
+one
+repeats
+ans
+num
+arrows
+i
+
+block3 (base):
+arrows
+num
+i
+one
+ans
+repeats
+
+block4 (arrowsgreaterthan1):
+repeats
+one
+ans
+i
+num
+arrows
+
+block5 (finally):
+one
+ans
+repeats
+arrows
+i
+num
+
+block6 (endloop):
+ans
+
+OUTS up_arrow
+block0 (up_arrow):
+i
+ans
+one
+repeats
+num
+arrows
+
+block1 (loopstart):
+num
+i
+repeats
+one
+arrows
+ans
+
+block2 (loopbody):
+num
+repeats
+arrows
+one
+ans
+i
+
+block3 (base):
+arrows
+num
+i
+one
+ans
+repeats
+
+block4 (arrowsgreaterthan1):
+one
+arrows
+ans
+repeats
+i
+num
+
+block5 (finally):
+repeats
+i
+arrows
+num
+ans
+one
+
+block6 (endloop):
+

@@ -1,0 +1,33 @@
+INS main
+block0 (main):
+input
+
+OUTS main
+block0 (main):
+
+INS fac
+block0 (fac):
+x
+
+block1 (then.0):
+
+block2 ():
+x
+
+block3 (else.0):
+
+block4 (endif.0):
+x
+
+OUTS fac
+block0 (fac):
+
+block1 (then.0):
+
+block2 ():
+x
+
+block3 (else.0):
+
+block4 (endif.0):
+

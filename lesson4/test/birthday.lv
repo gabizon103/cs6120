@@ -1,0 +1,42 @@
+INS main
+block0 (main):
+n
+
+OUTS main
+block0 (main):
+
+INS probability
+block0 (probability):
+n
+
+block1 (for.cond.1):
+n
+prob
+i
+
+block2 (for.body.1):
+i
+prob
+n
+
+block3 (for.end.1):
+prob
+
+OUTS probability
+block0 (probability):
+i
+n
+prob
+
+block1 (for.cond.1):
+n
+prob
+i
+
+block2 (for.body.1):
+n
+prob
+i
+
+block3 (for.end.1):
+

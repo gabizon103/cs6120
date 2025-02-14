@@ -1,0 +1,219 @@
+INS main
+block0 (main):
+in
+
+block1 (for.cond):
+index
+one
+in
+ten
+zero
+not_finished
+
+block2 (for.body):
+ten
+zero
+not_finished
+in
+index
+one
+
+block3 (if.true):
+ten
+zero
+index
+one
+in
+
+block4 (if.false):
+zero
+not_finished
+index
+in
+ten
+one
+
+block5 (for.end):
+in
+index
+one
+
+OUTS main
+block0 (main):
+index
+one
+not_finished
+ten
+in
+zero
+
+block1 (for.cond):
+ten
+index
+not_finished
+zero
+in
+one
+
+block2 (for.body):
+one
+in
+not_finished
+index
+zero
+ten
+
+block3 (if.true):
+ten
+zero
+index
+not_finished
+one
+in
+
+block4 (if.false):
+zero
+not_finished
+index
+in
+ten
+one
+
+block5 (for.end):
+
+INS pow
+block0 (pow):
+exp
+base
+
+block1 (for.cond.pow):
+exp
+base
+one
+not_finished
+zero
+res
+
+block2 (for.body.pow):
+base
+res
+exp
+not_finished
+zero
+one
+
+block3 (if.true.pow):
+res
+base
+one
+zero
+exp
+
+block4 (if.false.pow):
+one
+not_finished
+base
+exp
+zero
+res
+
+block5 (for.end.pow):
+res
+
+OUTS pow
+block0 (pow):
+base
+one
+not_finished
+res
+zero
+exp
+
+block1 (for.cond.pow):
+not_finished
+base
+exp
+res
+one
+zero
+
+block2 (for.body.pow):
+exp
+one
+base
+zero
+not_finished
+res
+
+block3 (if.true.pow):
+base
+one
+exp
+not_finished
+res
+zero
+
+block4 (if.false.pow):
+zero
+res
+exp
+base
+not_finished
+one
+
+block5 (for.end.pow):
+
+INS palindrome
+block0 (palindrome):
+in
+len
+
+block1 (if.true.palindrome):
+
+block2 (if.false.palindrome):
+two
+len
+ten
+in
+
+block3 (if.true.mirror):
+in
+right
+ten
+power
+len
+left
+two
+
+block4 (if.false.mirror):
+
+block5 (if.end.palindrome):
+is_palindrome
+
+OUTS palindrome
+block0 (palindrome):
+in
+ten
+two
+len
+
+block1 (if.true.palindrome):
+is_palindrome
+
+block2 (if.false.palindrome):
+right
+len
+two
+ten
+left
+power
+in
+
+block3 (if.true.mirror):
+is_palindrome
+
+block4 (if.false.mirror):
+is_palindrome
+
+block5 (if.end.palindrome):
+

@@ -1,0 +1,109 @@
+INS main
+block0 (main):
+n
+
+block1 (for.cond.1):
+n
+i
+
+block2 (for.body.1):
+n
+i
+
+block3 (then.7):
+n
+i
+
+block4 (else.7):
+i
+n
+
+block5 (endif.7):
+i
+n
+
+block6 (for.end.1):
+
+OUTS main
+block0 (main):
+i
+n
+
+block1 (for.cond.1):
+i
+n
+
+block2 (for.body.1):
+n
+i
+
+block3 (then.7):
+n
+i
+
+block4 (else.7):
+i
+n
+
+block5 (endif.7):
+n
+i
+
+block6 (for.end.1):
+
+INS checkPrime
+block0 (checkPrime):
+x
+
+block1 (then.0):
+
+block2 (else.0):
+
+block3 (endif.0):
+x
+
+block4 (for.cond.5):
+i
+x
+
+block5 (for.body.5):
+x
+i
+
+block6 (then.18):
+
+block7 (else.18):
+
+block8 (endif.18):
+x
+i
+
+block9 (for.end.5):
+
+OUTS checkPrime
+block0 (checkPrime):
+
+block1 (then.0):
+
+block2 (else.0):
+
+block3 (endif.0):
+i
+x
+
+block4 (for.cond.5):
+i
+x
+
+block5 (for.body.5):
+
+block6 (then.18):
+
+block7 (else.18):
+
+block8 (endif.18):
+i
+x
+
+block9 (for.end.5):
+

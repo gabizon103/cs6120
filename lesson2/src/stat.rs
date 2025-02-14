@@ -66,9 +66,7 @@ impl StatCounter {
                             let false_count = self.lbl_map.get(false_lbl).unwrap_or(&0);
                             self.lbl_map.insert(false_lbl.to_string(), false_count + 1);
                         }
-                        _ => {
-                            ()
-                        }
+                        _ => (),
                     },
                 }
             } else {

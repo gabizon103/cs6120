@@ -1,0 +1,26 @@
+@main(x: int) {
+  a: int = const 1;
+  one: int = const 1;
+  zero: int = const 0;
+
+  .loop_cond:
+  cond0: bool = lt x zero;
+  br cond0 .body .exit;
+
+  .body:
+  z: int = mul a a;
+  y: int = mul a x;
+  cond1: bool = eq x one;
+  br cond1 .tru .fals;
+
+  .tru:
+  a: int = id z;
+  jmp .loop_cond;
+
+  .fals:
+  a: int = id y;
+  jmp .loop_cond;
+
+  .exit:
+  ret x;
+}

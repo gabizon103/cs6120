@@ -1,0 +1,50 @@
+INS ack
+block0 (ack):
+m
+n
+
+block1 (m_zero):
+n
+one
+
+block2 (m_nonzero):
+m
+n
+one
+zero
+
+block3 (n_zero):
+one
+m
+
+block4 (n_nonzero):
+m
+n
+one
+
+OUTS ack
+block0 (ack):
+m
+one
+n
+zero
+
+block1 (m_zero):
+
+block2 (m_nonzero):
+one
+m
+n
+
+block3 (n_zero):
+
+block4 (n_nonzero):
+
+INS main
+block0 (main):
+m
+n
+
+OUTS main
+block0 (main):
+

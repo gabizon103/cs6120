@@ -1,0 +1,54 @@
+INS main
+block0 (main):
+n
+
+OUTS main
+block0 (main):
+
+INS sum_by_loop
+block0 (sum_by_loop):
+n
+
+block1 (for_start):
+one
+n
+i
+sum
+
+block2 (for):
+i
+one
+n
+sum
+
+block3 (end):
+sum
+
+OUTS sum_by_loop
+block0 (sum_by_loop):
+i
+one
+sum
+n
+
+block1 (for_start):
+n
+sum
+one
+i
+
+block2 (for):
+i
+one
+n
+sum
+
+block3 (end):
+
+INS sum_by_formula
+block0 (sum_by_formula):
+n
+
+OUTS sum_by_formula
+block0 (sum_by_formula):
+

@@ -1,0 +1,21 @@
+INS main
+block0 (main):
+
+block1 (t):
+
+block2 (f):
+
+block3 (end):
+a
+
+OUTS main
+block0 (main):
+
+block1 (t):
+a
+
+block2 (f):
+a
+
+block3 (end):
+

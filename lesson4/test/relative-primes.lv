@@ -1,0 +1,136 @@
+INS main
+block0 (main):
+
+OUTS main
+block0 (main):
+
+INS mod
+block0 (mod):
+b
+a
+
+OUTS mod
+block0 (mod):
+
+INS gcd
+block0 (gcd):
+b
+a
+
+block1 (then.0):
+b
+a
+
+block2 (else.0):
+
+block3 (endif.0):
+b
+a
+
+block4 (then.7):
+b
+
+block5 ():
+a
+b
+
+block6 (else.7):
+a
+b
+
+block7 (then.12):
+a
+
+block8 ():
+
+block9 (else.12):
+
+block10 (endif.12):
+
+block11 (endif.7):
+b
+a
+
+OUTS gcd
+block0 (gcd):
+b
+a
+
+block1 (then.0):
+b
+a
+
+block2 (else.0):
+
+block3 (endif.0):
+a
+b
+
+block4 (then.7):
+
+block5 ():
+a
+b
+
+block6 (else.7):
+a
+
+block7 (then.12):
+
+block8 ():
+
+block9 (else.12):
+
+block10 (endif.12):
+
+block11 (endif.7):
+
+INS relative_primes
+block0 (relative_primes):
+a
+
+block1 (for.cond.0):
+b
+a
+
+block2 (for.body.0):
+a
+b
+
+block3 (then.7):
+a
+b
+
+block4 (else.7):
+
+block5 (endif.7):
+a
+b
+
+block6 (for.end.0):
+
+OUTS relative_primes
+block0 (relative_primes):
+a
+b
+
+block1 (for.cond.0):
+b
+a
+
+block2 (for.body.0):
+b
+a
+
+block3 (then.7):
+a
+b
+
+block4 (else.7):
+
+block5 (endif.7):
+a
+b
+
+block6 (for.end.0):
+

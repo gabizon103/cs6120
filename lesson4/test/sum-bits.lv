@@ -1,0 +1,48 @@
+INS main
+block0 (main):
+input
+
+block1 (loop):
+zero
+sum
+two
+input
+
+block2 (body):
+two
+input
+zero
+sum
+
+block3 (done):
+sum
+
+OUTS main
+block0 (main):
+zero
+input
+sum
+two
+
+block1 (loop):
+zero
+input
+sum
+two
+
+block2 (body):
+sum
+input
+zero
+two
+
+block3 (done):
+
+INS mod
+block0 (mod):
+dividend
+divisor
+
+OUTS mod
+block0 (mod):
+

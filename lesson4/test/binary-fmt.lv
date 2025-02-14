@@ -1,0 +1,32 @@
+INS main
+block0 (main):
+n
+
+OUTS main
+block0 (main):
+
+INS printBinary
+block0 (printBinary):
+n
+
+block1 (rec):
+n
+
+block2 (end):
+
+OUTS printBinary
+block0 (printBinary):
+n
+
+block1 (rec):
+
+block2 (end):
+
+INS mod
+block0 (mod):
+a1
+a0
+
+OUTS mod
+block0 (mod):
+

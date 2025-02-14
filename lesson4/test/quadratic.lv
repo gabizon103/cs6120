@@ -1,0 +1,63 @@
+INS main
+block0 (main):
+b
+a
+c
+
+OUTS main
+block0 (main):
+
+INS sqrt
+block0 (sqrt):
+x
+
+block1 (for.cond.0):
+x
+i
+
+block2 (for.body.0):
+i
+x
+
+block3 (then.7):
+i
+
+block4 (else.7):
+
+block5 (endif.7):
+i
+x
+
+block6 (for.end.0):
+
+OUTS sqrt
+block0 (sqrt):
+x
+i
+
+block1 (for.cond.0):
+i
+x
+
+block2 (for.body.0):
+i
+
+block3 (then.7):
+
+block4 (else.7):
+
+block5 (endif.7):
+x
+i
+
+block6 (for.end.0):
+
+INS quadratic
+block0 (quadratic):
+c
+b
+a
+
+OUTS quadratic
+block0 (quadratic):
+

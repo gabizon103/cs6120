@@ -5,17 +5,57 @@ use lesson2::{BasicBlock, ControlFlow};
 
 fn get_args(instr: &Instruction) -> Vec<String> {
     match instr {
-        Instruction::Constant { dest, op, pos, const_type, value } => vec![],
-        Instruction::Value { args, dest, funcs, labels, op, pos, op_type } => args.to_vec(),
-        Instruction::Effect { args, funcs, labels, op, pos } => args.to_vec(),
+        Instruction::Constant {
+            dest,
+            op,
+            pos,
+            const_type,
+            value,
+        } => vec![],
+        Instruction::Value {
+            args,
+            dest,
+            funcs,
+            labels,
+            op,
+            pos,
+            op_type,
+        } => args.to_vec(),
+        Instruction::Effect {
+            args,
+            funcs,
+            labels,
+            op,
+            pos,
+        } => args.to_vec(),
     }
 }
 
 fn get_dest(instr: &Instruction) -> Option<String> {
     match instr {
-        Instruction::Constant { dest, op, pos, const_type, value } => Some(dest.to_string()),
-        Instruction::Value { args, dest, funcs, labels, op, pos, op_type } => Some(dest.to_string()),
-        Instruction::Effect { args, funcs, labels, op, pos } => None,
+        Instruction::Constant {
+            dest,
+            op,
+            pos,
+            const_type,
+            value,
+        } => Some(dest.to_string()),
+        Instruction::Value {
+            args,
+            dest,
+            funcs,
+            labels,
+            op,
+            pos,
+            op_type,
+        } => Some(dest.to_string()),
+        Instruction::Effect {
+            args,
+            funcs,
+            labels,
+            op,
+            pos,
+        } => None,
     }
 }
 
@@ -72,50 +112,74 @@ impl DeadCodeElim {
             });
         });
 
-        func.blocks.iter().enumerate().for_each(|(block_idx, block)| {
-            block.instrs.iter().enumerate().for_each(|(instr_idx, instr)| {
-                if let Some(dest) = get_dest(instr) {
-                    if !used.contains(&dest) {
-                        to_remove.insert((block_idx, instr_idx));
-                    }
-                }
-            })
-        });
+        func.blocks
+            .iter()
+            .enumerate()
+            .for_each(|(block_idx, block)| {
+                block
+                    .instrs
+                    .iter()
+                    .enumerate()
+                    .for_each(|(instr_idx, instr)| {
+                        if let Some(dest) = get_dest(instr) {
+                            if !used.contains(&dest) {
+                                to_remove.insert((block_idx, instr_idx));
+                            }
+                        }
+                    })
+            });
 
         let mut last_def: HashMap<String, (usize, usize)> = HashMap::new();
-        func.blocks.iter().enumerate().for_each(|(block_idx, block)| {
-            block.instrs.iter().enumerate().for_each(|(instr_idx, instr)| {
-                get_args(instr).iter().for_each(|arg| {
-                    last_def.remove(arg);
-                });
-                if let Some(dest) = get_dest(instr) {
-                    if let Some((b, i)) = last_def.get(&dest) {
-                        to_remove.insert((*b, *i));
-                        last_def.insert(dest, (block_idx, instr_idx));
-                    }
-                }
+        func.blocks
+            .iter()
+            .enumerate()
+            .for_each(|(block_idx, block)| {
+                block
+                    .instrs
+                    .iter()
+                    .enumerate()
+                    .for_each(|(instr_idx, instr)| {
+                        get_args(instr).iter().for_each(|arg| {
+                            last_def.remove(arg);
+                        });
+                        if let Some(dest) = get_dest(instr) {
+                            if let Some((b, i)) = last_def.get(&dest) {
+                                to_remove.insert((*b, *i));
+                                last_def.insert(dest, (block_idx, instr_idx));
+                            }
+                        }
+                    });
             });
-        });
 
         let mut blocks: Vec<BasicBlock> = Vec::default();
-        func.blocks.iter().enumerate().for_each(|(block_idx, block)| {
-            let mut new_block = BasicBlock::default();
-            new_block.name = block.name.clone();
-            block.instrs.iter().enumerate().for_each(|(instr_idx, instr)| {
-                if !to_remove.contains(&(block_idx, instr_idx)) {
-                    new_block.instrs.push(instr.clone());
-                }
+        func.blocks
+            .iter()
+            .enumerate()
+            .for_each(|(block_idx, block)| {
+                let mut new_block = BasicBlock::default();
+                new_block.name = block.name.clone();
+                block
+                    .instrs
+                    .iter()
+                    .enumerate()
+                    .for_each(|(instr_idx, instr)| {
+                        if !to_remove.contains(&(block_idx, instr_idx)) {
+                            new_block.instrs.push(instr.clone());
+                        }
+                    });
+                blocks.push(new_block);
             });
-            blocks.push(new_block);
-        });
 
-        (ControlFlow {
-            name: func.name.clone(),
-            blocks,
-            edges: func.edges.clone(),
-            lbl_to_block: func.lbl_to_block.clone(),
-            args: func.args.clone(),
-        }, !to_remove.is_empty())
+        (
+            ControlFlow {
+                name: func.name.clone(),
+                blocks,
+                edges: func.edges.clone(),
+                lbl_to_block: func.lbl_to_block.clone(),
+                args: func.args.clone(),
+            },
+            !to_remove.is_empty(),
+        )
     }
 
     /// Perform dce to fixed point

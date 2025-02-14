@@ -1,0 +1,149 @@
+INS main
+block0 (main):
+
+block1 (for.outer.init):
+a
+b
+
+block2 (true):
+b
+
+block3 (false):
+b
+a
+
+block4 (for.outer.cond):
+b
+t2
+
+block5 (for.outer.body):
+t2
+b
+
+block6 (for.inner.init):
+t5
+b
+t2
+
+block7 (for.inner.cond):
+t5
+b
+t6
+t2
+t7
+
+block8 (for.inner.body):
+t5
+t2
+b
+t7
+t6
+
+block9 (if.inner.body):
+b
+t2
+t6
+
+block10 (if.inner.end):
+t7
+t6
+t2
+b
+t5
+
+block11 (for.inner.end):
+t5
+b
+t6
+t2
+
+block12 (if.outer.body):
+b
+t2
+
+block13 (if.outer.end):
+b
+t2
+
+block14 (for.outer.end):
+
+OUTS main
+block0 (main):
+
+block1 (for.outer.init):
+b
+a
+
+block2 (true):
+b
+t2
+
+block3 (false):
+t2
+b
+
+block4 (for.outer.cond):
+b
+t2
+
+block5 (for.outer.body):
+t2
+t5
+b
+
+block6 (for.inner.init):
+t5
+t7
+b
+t2
+t6
+
+block7 (for.inner.cond):
+t6
+t7
+t5
+b
+t2
+
+block8 (for.inner.body):
+t5
+t2
+t7
+t6
+b
+
+block9 (if.inner.body):
+b
+t2
+t5
+t6
+
+block10 (if.inner.end):
+t6
+t7
+t2
+b
+t5
+
+block11 (for.inner.end):
+b
+t2
+
+block12 (if.outer.body):
+b
+t2
+
+block13 (if.outer.end):
+t2
+b
+
+block14 (for.outer.end):
+
+INS mod
+block0 (mod):
+a
+b
+
+OUTS mod
+block0 (mod):
+

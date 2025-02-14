@@ -1,0 +1,91 @@
+INS main
+block0 (main):
+input
+
+block1 (for.cond.0):
+index
+input
+
+block2 (for.body.0):
+index
+input
+
+block3 (then.21):
+isBuzz
+index
+input
+
+block4 (then.23):
+input
+index
+
+block5 (else.23):
+index
+input
+
+block6 (endif.23):
+input
+index
+
+block7 (else.21):
+isBuzz
+index
+
+block8 (then.33):
+
+block9 (else.33):
+index
+
+block10 (endif.33):
+
+block11 (endif.21):
+index
+input
+
+block12 (for.end.0):
+
+OUTS main
+block0 (main):
+input
+index
+
+block1 (for.cond.0):
+index
+input
+
+block2 (for.body.0):
+input
+index
+isBuzz
+
+block3 (then.21):
+input
+index
+
+block4 (then.23):
+input
+index
+
+block5 (else.23):
+index
+input
+
+block6 (endif.23):
+input
+index
+
+block7 (else.21):
+index
+
+block8 (then.33):
+
+block9 (else.33):
+
+block10 (endif.33):
+
+block11 (endif.21):
+input
+index
+
+block12 (for.end.0):
+

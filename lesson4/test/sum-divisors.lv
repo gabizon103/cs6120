@@ -1,0 +1,99 @@
+INS main
+block0 (main):
+n
+
+block1 (neg):
+zer
+n
+one
+res
+non
+i
+
+block2 (begin):
+res
+n
+zer
+one
+i
+
+block3 (check):
+i
+res
+zer
+n
+one
+
+block4 (body):
+i
+n
+res
+zer
+one
+
+block5 (then):
+i
+one
+d
+res
+n
+zer
+
+block6 (end):
+res
+
+OUTS main
+block0 (main):
+n
+one
+zer
+non
+res
+i
+
+block1 (neg):
+zer
+n
+one
+res
+i
+
+block2 (begin):
+n
+one
+i
+res
+zer
+
+block3 (check):
+zer
+i
+one
+res
+n
+
+block4 (body):
+d
+i
+n
+zer
+one
+res
+
+block5 (then):
+i
+one
+res
+n
+zer
+
+block6 (end):
+
+INS mod
+block0 (mod):
+dividend
+divisor
+
+OUTS mod
+block0 (mod):
+

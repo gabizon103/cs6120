@@ -1,0 +1,72 @@
+INS main
+block0 (main):
+input
+
+block1 (for.cond.3):
+n
+v1
+notdone
+result
+v0
+
+block2 (for.body.3):
+notdone
+v0
+n
+v1
+result
+
+block3 (if.body):
+n
+result
+v1
+v0
+
+block4 (for.incre):
+v1
+result
+n
+notdone
+v0
+
+block5 (for.end.3):
+result
+
+OUTS main
+block0 (main):
+v0
+n
+result
+v1
+notdone
+
+block1 (for.cond.3):
+v1
+result
+notdone
+v0
+n
+
+block2 (for.body.3):
+v0
+v1
+result
+notdone
+n
+
+block3 (if.body):
+n
+notdone
+result
+v1
+v0
+
+block4 (for.incre):
+v1
+result
+n
+notdone
+v0
+
+block5 (for.end.3):
+

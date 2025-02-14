@@ -1,0 +1,65 @@
+INS main
+block0 (main):
+x
+
+block1 (loop_cond):
+zero
+x
+one
+a
+
+block2 (body):
+a
+one
+zero
+x
+
+block3 (tru):
+zero
+x
+z
+one
+
+block4 (fals):
+zero
+y
+one
+x
+
+block5 (exit):
+x
+
+OUTS main
+block0 (main):
+a
+one
+zero
+x
+
+block1 (loop_cond):
+zero
+x
+one
+a
+
+block2 (body):
+one
+zero
+y
+x
+z
+
+block3 (tru):
+zero
+x
+a
+one
+
+block4 (fals):
+zero
+one
+x
+a
+
+block5 (exit):
+

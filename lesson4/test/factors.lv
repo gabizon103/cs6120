@@ -1,0 +1,63 @@
+INS main
+block0 (main):
+num
+
+block1 (loopcheck):
+zer
+one
+num
+fac
+
+block2 (loopbody):
+zer
+fac
+num
+one
+
+block3 (ifyes):
+zer
+fac
+num
+one
+
+block4 (ifno):
+one
+zer
+num
+fac
+
+block5 (loopend):
+
+OUTS main
+block0 (main):
+one
+fac
+num
+zer
+
+block1 (loopcheck):
+num
+one
+fac
+zer
+
+block2 (loopbody):
+one
+fac
+num
+zer
+
+block3 (ifyes):
+zer
+fac
+num
+one
+
+block4 (ifno):
+one
+zer
+num
+fac
+
+block5 (loopend):
+

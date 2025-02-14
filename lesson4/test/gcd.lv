@@ -1,0 +1,100 @@
+INS main
+block0 (main):
+op2
+op1
+
+block1 (cmp.val):
+vc0
+v0
+v1
+
+block2 (if.1):
+v2
+vc0
+v1
+v0
+
+block3 (else.1):
+v2
+v0
+v1
+vc0
+
+block4 (loop.bound):
+v3
+v2
+v1
+v0
+vc0
+
+block5 (update.val):
+v2
+v0
+v3
+vc0
+v1
+
+block6 (if.2):
+v0
+v3
+vc0
+
+block7 (else.2):
+vc0
+v1
+v3
+
+block8 (program.end):
+v1
+
+OUTS main
+block0 (main):
+v1
+v0
+vc0
+
+block1 (cmp.val):
+vc0
+v2
+v0
+v1
+
+block2 (if.1):
+v2
+v3
+v0
+vc0
+v1
+
+block3 (else.1):
+v3
+vc0
+v1
+v0
+v2
+
+block4 (loop.bound):
+v0
+v1
+vc0
+v3
+v2
+
+block5 (update.val):
+vc0
+v3
+v0
+v1
+
+block6 (if.2):
+v0
+v1
+vc0
+
+block7 (else.2):
+v0
+vc0
+v1
+
+block8 (program.end):
+

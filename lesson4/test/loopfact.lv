@@ -1,0 +1,30 @@
+INS main
+block0 (main):
+input
+
+block1 (for.cond.2):
+result
+i
+
+block2 (for.body.2):
+result
+i
+
+block3 (for.end.2):
+result
+
+OUTS main
+block0 (main):
+result
+i
+
+block1 (for.cond.2):
+result
+i
+
+block2 (for.body.2):
+result
+i
+
+block3 (for.end.2):
+

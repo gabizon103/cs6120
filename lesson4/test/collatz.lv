@@ -1,0 +1,75 @@
+INS main
+block0 (main):
+x
+
+block1 (cond):
+three
+two
+one
+x
+
+block2 (loop):
+three
+two
+x
+one
+
+block3 (even):
+three
+one
+two
+x
+
+block4 (odd):
+three
+two
+x
+one
+
+block5 (print):
+two
+one
+x
+three
+
+block6 (end):
+
+OUTS main
+block0 (main):
+x
+three
+two
+one
+
+block1 (cond):
+three
+two
+one
+x
+
+block2 (loop):
+three
+two
+one
+x
+
+block3 (even):
+three
+one
+two
+x
+
+block4 (odd):
+three
+one
+two
+x
+
+block5 (print):
+two
+one
+x
+three
+
+block6 (end):
+

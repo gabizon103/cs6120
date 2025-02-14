@@ -1,0 +1,125 @@
+INS main
+block0 (main):
+input
+
+block1 (loop):
+tmp
+digits
+sum
+zero
+input
+ten
+
+block2 (body):
+zero
+input
+tmp
+ten
+digits
+sum
+
+block3 (done):
+sum
+input
+
+OUTS main
+block0 (main):
+tmp
+input
+zero
+ten
+digits
+sum
+
+block1 (loop):
+sum
+input
+tmp
+ten
+zero
+digits
+
+block2 (body):
+zero
+ten
+input
+digits
+tmp
+sum
+
+block3 (done):
+
+INS getDigits
+block0 (getDigits):
+n
+
+block1 (then):
+one
+
+block2 (else):
+div
+one
+
+OUTS getDigits
+block0 (getDigits):
+div
+one
+
+block1 (then):
+
+block2 (else):
+
+INS mod
+block0 (mod):
+a
+b
+
+OUTS mod
+block0 (mod):
+
+INS power
+block0 (power):
+exp
+base
+
+block1 (loop):
+exp
+res
+zero
+base
+one
+
+block2 (body):
+zero
+one
+res
+exp
+base
+
+block3 (done):
+res
+
+OUTS power
+block0 (power):
+exp
+res
+zero
+base
+one
+
+block1 (loop):
+one
+res
+exp
+base
+zero
+
+block2 (body):
+exp
+res
+base
+zero
+one
+
+block3 (done):
+

@@ -1,0 +1,24 @@
+INS main
+block0 (main):
+a
+
+OUTS main
+block0 (main):
+
+INS fact
+block0 (fact):
+a
+
+block1 (then.0):
+
+block2 (else.0):
+a
+
+OUTS fact
+block0 (fact):
+a
+
+block1 (then.0):
+
+block2 (else.0):
+

@@ -1,0 +1,77 @@
+INS sumOfSquares
+block0 (sumOfSquares):
+n
+
+block1 (for.cond.1):
+n
+res
+i
+
+block2 (for.body.1):
+i
+n
+res
+
+block3 (for.end.1):
+res
+
+OUTS sumOfSquares
+block0 (sumOfSquares):
+n
+res
+i
+
+block1 (for.cond.1):
+res
+i
+n
+
+block2 (for.body.1):
+res
+n
+i
+
+block3 (for.end.1):
+
+INS squareOfSum
+block0 (squareOfSum):
+n
+
+block1 (for.cond.1):
+i
+n
+res
+
+block2 (for.body.1):
+i
+res
+n
+
+block3 (for.end.1):
+res
+
+OUTS squareOfSum
+block0 (squareOfSum):
+res
+n
+i
+
+block1 (for.cond.1):
+res
+i
+n
+
+block2 (for.body.1):
+i
+n
+res
+
+block3 (for.end.1):
+
+INS main
+block0 (main):
+n
+
+OUTS main
+block0 (main):
+

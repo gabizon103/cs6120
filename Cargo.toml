@@ -1,5 +1,5 @@
 [workspace]
-members = ["lesson2", "lesson3"]
+members = ["lesson2", "lesson3", "lesson4", "utils"]
 
 [workspace.dependencies]
 bril-rs = { git = "https://github.com/sampsyo/bril", features = [

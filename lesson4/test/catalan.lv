@@ -1,0 +1,62 @@
+INS main
+block0 (main):
+input
+
+OUTS main
+block0 (main):
+
+INS catalan
+block0 (catalan):
+n
+
+block1 (if):
+one
+
+block2 (else):
+n
+zero
+one
+
+block3 (while):
+idx
+sum
+one
+n
+
+block4 (while.body):
+sum
+idx
+n
+one
+
+block5 (while.end):
+sum
+
+OUTS catalan
+block0 (catalan):
+one
+n
+zero
+
+block1 (if):
+
+block2 (else):
+n
+idx
+one
+sum
+
+block3 (while):
+n
+idx
+sum
+one
+
+block4 (while.body):
+sum
+one
+n
+idx
+
+block5 (while.end):
+

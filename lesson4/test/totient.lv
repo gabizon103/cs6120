@@ -1,0 +1,136 @@
+INS main
+block0 (main):
+n
+
+OUTS main
+block0 (main):
+
+INS totient
+block0 (totient):
+n
+
+block1 (for.set.cond):
+zero
+one
+p
+result
+n
+
+block2 (for.set.body):
+result
+one
+zero
+n
+p
+
+block3 (if_lbl):
+
+block4 (while.set.cond):
+one
+n
+p
+zero
+result
+
+block5 (while.body):
+result
+n
+one
+p
+zero
+
+block6 (while.end):
+zero
+one
+n
+p
+result
+
+block7 (else_lbl):
+one
+p
+zero
+n
+result
+
+block8 (for.set.end):
+result
+one
+n
+
+block9 (final_if_label):
+n
+result
+
+block10 (final_else_label):
+result
+
+OUTS totient
+block0 (totient):
+one
+n
+result
+zero
+p
+
+block1 (for.set.cond):
+one
+p
+zero
+n
+result
+
+block2 (for.set.body):
+result
+one
+zero
+n
+p
+
+block3 (if_lbl):
+
+block4 (while.set.cond):
+n
+p
+zero
+one
+result
+
+block5 (while.body):
+result
+n
+one
+p
+zero
+
+block6 (while.end):
+n
+zero
+result
+one
+p
+
+block7 (else_lbl):
+one
+p
+zero
+n
+result
+
+block8 (for.set.end):
+result
+n
+
+block9 (final_if_label):
+result
+
+block10 (final_else_label):
+
+INS mod
+block0 (mod):
+b
+a
+
+OUTS mod
+block0 (mod):
+

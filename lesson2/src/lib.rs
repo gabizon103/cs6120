@@ -4,9 +4,9 @@ use graphviz_rust::dot_structures::{
     Attribute, Edge as VizEdge, EdgeTy, Id, Node, NodeId, Stmt, Subgraph, Vertex,
 };
 use itertools::Itertools;
-use serde_json;
-use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
+use serde_json;
+use std::collections::{HashMap, HashSet};
 
 #[derive(Default, Clone, Debug, Serialize, Deserialize)]
 pub struct BasicBlock {
@@ -54,9 +54,7 @@ fn is_terminator_or_label(code: &Code) -> bool {
                 bril_rs::EffectOps::Jump
                 | bril_rs::EffectOps::Branch
                 | bril_rs::EffectOps::Return => true,
-                _ => {
-                    false
-                }
+                _ => false,
             },
         },
     }
@@ -103,21 +101,33 @@ fn build_blocks(func: Function) -> (String, Vec<BasicBlock>, HashMap<String, usi
 pub fn form_blocks_from_read<R: std::io::Read>(
     mut input: R,
     // file_name: Option<PathBuf>,
-) -> (Vec<(String, Vec<BasicBlock>, HashMap<String, usize>, Vec<Argument>)>, Program) {
+) -> (
+    Vec<(
+        String,
+        Vec<BasicBlock>,
+        HashMap<String, usize>,
+        Vec<Argument>,
+    )>,
+    Program,
+) {
     let mut buf = String::new();
     input.read_to_string(&mut buf).unwrap();
 
     let program: Program =
         serde_json::from_str(&buf).expect("couldn't parse json into bril program");
 
-    (program.clone()
-        .functions
-        .into_iter()
-        .map(|func| {
-            let (name, blocks, lbl_to_block) = build_blocks(func.clone());
-            (name, blocks, lbl_to_block, func.args)
-         })
-        .collect(), program)
+    (
+        program
+            .clone()
+            .functions
+            .into_iter()
+            .map(|func| {
+                let (name, blocks, lbl_to_block) = build_blocks(func.clone());
+                (name, blocks, lbl_to_block, func.args)
+            })
+            .collect(),
+        program,
+    )
 }
 
 #[derive(Clone)]
@@ -152,7 +162,7 @@ impl std::fmt::Display for ControlFlow {
 
 #[derive(Default, Serialize, Deserialize)]
 pub struct CFGProgram {
-    pub functions: Vec<ControlFlow>
+    pub functions: Vec<ControlFlow>,
 }
 
 impl CFGProgram {
@@ -161,20 +171,21 @@ impl CFGProgram {
     }
 
     pub fn flatten_blocks(&self) -> Vec<FlatFunction> {
-        self.functions.iter().map(|func|  {
-            FlatFunction {
+        self.functions
+            .iter()
+            .map(|func| FlatFunction {
                 name: func.name.clone(),
-                instrs: func.flatten_blocks(), 
+                instrs: func.flatten_blocks(),
                 args: vec![],
-                return_type: None
-            }
-        }).collect()
+                return_type: None,
+            })
+            .collect()
     }
 }
 
 #[derive(Serialize, Deserialize)]
 pub struct FlatProgram {
-    pub functions: Vec<FlatFunction>
+    pub functions: Vec<FlatFunction>,
 }
 
 impl FlatProgram {
@@ -190,7 +201,7 @@ pub struct FlatFunction {
     pub args: Vec<Argument>,
     #[serde(rename = "type")]
     #[serde(skip_serializing_if = "Option::is_none")]
-    pub return_type: Option<Type>
+    pub return_type: Option<Type>,
 }
 
 #[derive(Default, Serialize, Deserialize)]
@@ -203,7 +214,7 @@ pub struct ControlFlow {
     #[serde(skip_serializing)]
     #[serde(skip_deserializing)]
     pub lbl_to_block: HashMap<String, usize>,
-    pub args: Vec<Argument>
+    pub args: Vec<Argument>,
 }
 
 impl ControlFlow {
@@ -211,7 +222,7 @@ impl ControlFlow {
         name: String,
         blocks: Vec<BasicBlock>,
         lbl_to_block: HashMap<String, usize>,
-        args: Vec<Argument>
+        args: Vec<Argument>,
     ) -> Self {
         let mut edges = vec![];
         for _ in 0..blocks.len() {
@@ -222,14 +233,66 @@ impl ControlFlow {
             blocks,
             edges,
             lbl_to_block,
-            args
+            args,
         }
+    }
+
+    /// Returns a set of the predecessors of blk
+    pub fn preds(&self, blk: usize) -> HashSet<usize> {
+        let mut preds = HashSet::new();
+        self.edges.iter().enumerate().for_each(|(src_idx, edge)| {
+            match edge {
+                Edge::Uncond(dst_idx) => {
+                    if *dst_idx == blk {
+                        preds.insert(src_idx);
+                    }
+                }
+                Edge::Cond {
+                    true_targ,
+                    false_targ,
+                } => {
+                    if *true_targ == blk || *false_targ == blk {
+                        preds.insert(src_idx);
+                    }
+                }
+                Edge::None => (),
+            };
+        });
+
+        preds
+    }
+
+    pub fn succs(&self, blk: usize) -> Vec<usize> {
+        match self.edges.get(blk).unwrap() {
+            Edge::Uncond(idx) => vec![*idx],
+            Edge::Cond {
+                true_targ,
+                false_targ,
+            } => vec![*true_targ, *false_targ],
+            Edge::None => vec![],
+        }
+    }
+
+    pub fn create_single_exit(&mut self) {
+        let mut exit = BasicBlock::default();
+        exit.name = "exit".to_string();
+        self.blocks.push(exit);
+        let exit_idx = self.blocks.len()-1;
+        self.edges.push(Edge::None);
+        self.edges.iter_mut().enumerate().for_each(|(idx, edge)| {
+            if matches!(edge, Edge::None) && idx != exit_idx {
+                *edge = Edge::Uncond(exit_idx);
+            }
+        });
     }
 
     pub fn flatten_blocks(&self) -> Vec<Code> {
         let mut instrs = vec![];
         self.blocks.iter().for_each(|block| {
-            let lbl = Code::Label { label: block.name.clone(), pos: None };
+            let lbl = Code::Label {
+                label: block.name.clone(),
+                pos: None,
+            };
             instrs.push(lbl);
             block.instrs.iter().for_each(|instr| {
                 instrs.push(Code::Instruction(instr.clone()));
@@ -242,14 +305,13 @@ impl ControlFlow {
         for (idx, block) in self.blocks.iter().enumerate() {
             if let Some(last) = block.instrs.last() {
                 match last {
-                    Instruction::Constant { .. } |
-                    Instruction::Value { .. } => {
+                    Instruction::Constant { .. } | Instruction::Value { .. } => {
                         if idx == self.blocks.len() - 1 {
                             self.edges.insert(idx, Edge::None);
                         } else {
                             self.edges.insert(idx, Edge::Uncond(idx + 1))
                         }
-                    },
+                    }
                     Instruction::Effect { labels, op, .. } => match op {
                         bril_rs::EffectOps::Jump => {
                             let targ = labels.get(0).unwrap();
@@ -271,7 +333,7 @@ impl ControlFlow {
                         }
                         bril_rs::EffectOps::Return => {
                             self.edges.insert(idx, Edge::None);
-                        },
+                        }
                         _ => {
                             // if there are no blocks after this one
                             if idx == self.blocks.len() - 1 {
@@ -283,7 +345,8 @@ impl ControlFlow {
                     },
                 }
             }
-        }
+        };
+        // self.create_single_exit();
     }
 
     pub fn to_dot(&self, sg_idx: usize) -> Subgraph {

@@ -1,0 +1,157 @@
+INS abs
+block0 (abs):
+a
+
+block1 (mul_neg_one):
+a
+
+block2 (abs_res):
+a
+
+OUTS abs
+block0 (abs):
+a
+
+block1 (mul_neg_one):
+a
+
+block2 (abs_res):
+
+INS mod
+block0 (mod):
+b
+a
+
+OUTS mod
+block0 (mod):
+
+INS gcd
+block0 (gcd):
+
+block1 (while.cond):
+b
+a
+
+block2 (while.body):
+mod
+b
+
+block3 (while.finish):
+b
+
+OUTS gcd
+block0 (gcd):
+
+block1 (while.cond):
+b
+mod
+
+block2 (while.body):
+a
+b
+
+block3 (while.finish):
+
+INS lcm
+block0 (lcm):
+a
+b
+
+block1 (check_b):
+a
+zero
+b
+
+block2 (special_case):
+zero
+
+block3 (is_good):
+a
+b
+
+OUTS lcm
+block0 (lcm):
+zero
+a
+b
+
+block1 (check_b):
+a
+b
+zero
+
+block2 (special_case):
+
+block3 (is_good):
+
+INS orders
+block0 (orders):
+
+block1 (for.cond):
+use_lcm
+u
+n
+
+block2 (for.body):
+n
+use_lcm
+u
+
+block3 (lcm):
+n
+u
+use_lcm
+
+block4 (gcd):
+use_lcm
+n
+u
+
+block5 (for.body.print):
+use_lcm
+n
+ordu
+u
+
+block6 (for.finish):
+
+OUTS orders
+block0 (orders):
+
+block1 (for.cond):
+n
+u
+use_lcm
+
+block2 (for.body):
+use_lcm
+n
+u
+
+block3 (lcm):
+n
+ordu
+u
+use_lcm
+
+block4 (gcd):
+use_lcm
+ordu
+n
+u
+
+block5 (for.body.print):
+use_lcm
+u
+n
+
+block6 (for.finish):
+
+INS main
+block0 (main):
+use_lcm
+n
+
+OUTS main
+block0 (main):
+

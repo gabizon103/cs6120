@@ -1,0 +1,17 @@
+@main(a: int) {
+  a: int = const 5;
+  zero: int = const 0;
+  cond: bool = eq a zero;
+  br cond .t .f;
+
+  .t:
+  a: int = const 7;
+  jmp .end;
+
+  .f:
+  a: int = const 9;
+  jmp .end;
+
+  .end:
+  print a;
+}

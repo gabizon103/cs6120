@@ -1,0 +1,53 @@
+INS main
+block0 (main):
+
+OUTS main
+block0 (main):
+
+INS mod
+block0 (mod):
+s
+r
+
+OUTS mod
+block0 (mod):
+
+INS gcd
+block0 (gcd):
+a
+b
+
+block1 (for.cond.5):
+a
+cond
+zero
+b
+
+block2 (for.body.5):
+zero
+a
+b
+
+block3 (for.end.5):
+a
+
+OUTS gcd
+block0 (gcd):
+zero
+cond
+a
+b
+
+block1 (for.cond.5):
+b
+zero
+a
+
+block2 (for.body.5):
+a
+b
+cond
+zero
+
+block3 (for.end.5):
+

@@ -1,0 +1,7 @@
+[envs.live_vars]
+command = "bril2json < {filename} | cargo run -- --analysis live-vars"
+output.lv = "-"
+
+[envs.reaching_defs]
+command = "bril2json < {filename} | cargo run -- --analysis reaching-defs"
+output.rd = "-"

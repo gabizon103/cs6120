@@ -1,10 +1,8 @@
-use std::{collections::{HashMap, HashSet}, fmt::Display, hash::Hash};
+use std::{collections::HashMap, hash::Hash};
 
-use bigdecimal::BigDecimal;
-use bril_rs::{Argument, ConstOps, EffectOps, Instruction, Type, ValueOps};
+use bril_rs::{ConstOps, EffectOps, Instruction, Type, ValueOps};
 use lesson2::{BasicBlock, ControlFlow};
 use ordered_float::OrderedFloat;
-use std::str::FromStr;
 
 #[derive(Hash, Eq, PartialEq, Debug, Clone)]
 pub enum Ops {
@@ -55,7 +53,6 @@ pub struct LocalValueNumbering {
     pub cfg: ControlFlow,
     pub table: HashMap<Value, (usize, String)>,
     pub var2num: HashMap<String, usize>,
-    pub num2var: HashMap<usize, Vec<String>>,
     pub src2rename: HashMap<String, String>,
     pub val_idx: usize,
     pub name_idx: usize,
@@ -68,17 +65,11 @@ impl LocalValueNumbering {
             cfg: ControlFlow::default(),
             table: HashMap::default(),
             var2num: HashMap::default(),
-            num2var: HashMap::default(),            src2rename: HashMap::default(),
+            src2rename: HashMap::default(),
             val_idx: 0,
             name_idx: 0,
             args: vec![],
         }
-    }
-
-    fn advance(&mut self) -> usize {
-        let idx = self.val_idx;
-        self.val_idx += 1;
-        idx
     }
 
     fn gen_name(&mut self) -> String {
@@ -121,13 +112,7 @@ impl LocalValueNumbering {
                 pos: pos.clone(),
                 op_type: op_type.clone(),
             },
-            Instruction::Effect {
-                args,
-                funcs,
-                labels,
-                op,
-                pos,
-            } => todo!(),
+            Instruction::Effect { .. } => todo!(),
         }
     }
 
@@ -174,9 +159,8 @@ impl LocalValueNumbering {
                 op,
                 pos,
                 ..
-            } => { 
-                let new_instr =
-                    Instruction::Effect {
+            } => {
+                let new_instr = Instruction::Effect {
                     args,
                     funcs: funcs.clone(),
                     labels: labels.clone(),
@@ -184,19 +168,13 @@ impl LocalValueNumbering {
                     pos: pos.clone(),
                 };
                 new_instr
-            },
+            }
         }
     }
 
     fn rebuild_instr_args(&self, instr: &Instruction, args: Vec<String>) -> Instruction {
         match instr {
-            Instruction::Constant {
-                dest,
-                op,
-                pos,
-                const_type,
-                value,
-            } => instr.clone(),
+            Instruction::Constant { .. } => instr.clone(),
             Instruction::Value {
                 dest,
                 funcs,
@@ -272,39 +250,18 @@ impl LocalValueNumbering {
             .to_string()
     }
 
-    fn read_before_written(&self, block: &BasicBlock) -> HashSet<String> {
-        let mut written: HashSet<String> = HashSet::new();
-        let mut read: HashSet<String> = HashSet::new();
-        for instr in &block.instrs {
-            let args = Self::get_args(&instr);
-            let mut arg_set = HashSet::new();
-            args.iter().for_each(|arg| {
-                arg_set.insert(arg.clone());
-            });
-            written.iter().for_each(|elt| {
-                arg_set.remove(elt);
-            });
-            arg_set.iter().for_each(|elt| {
-                read.insert(elt.clone());
-            });
-            
-            if let Some((dest, typ)) = Self::get_dest_typ(&instr) {
-                written.insert(dest.clone());
-            }
-        };
-        read
-    }
-
     // returns true if dest will be written later in the block
     fn will_be_written_later(&self, instr_idx: usize, dest: String, block: &BasicBlock) -> bool {
-        let (_, tail) = block.instrs.split_at(instr_idx+1);
-        !tail.iter().filter(|instr| {
-            match instr {
+        let (_, tail) = block.instrs.split_at(instr_idx + 1);
+        !tail
+            .iter()
+            .filter(|instr| match instr {
                 Instruction::Constant { dest: i_dest, .. } => *i_dest == dest,
                 Instruction::Value { dest: i_dest, .. } => *i_dest == dest,
                 Instruction::Effect { .. } => false,
-            }
-        }).collect::<Vec<_>>().is_empty()
+            })
+            .collect::<Vec<_>>()
+            .is_empty()
     }
 
     fn is_free(&self, val: &Value) -> bool {
@@ -328,7 +285,18 @@ impl LocalValueNumbering {
             },
             Value::Argument(_) => false,
             Value::Call(items, items1) => false,
-        } 
+        }
+    }
+
+    fn canonicalize(&self, val: &mut Value) {
+        match val {
+            Value::Const(const_ops, literal, _) => (),
+            Value::Expr(ops, items) => {
+                items.sort();
+            }
+            Value::Argument(_) => (),
+            Value::Call(items, items1) => (),
+        }
     }
 
     pub fn do_block(&mut self, block: &BasicBlock) -> BasicBlock {
@@ -344,7 +312,8 @@ impl LocalValueNumbering {
                         arg
                     };
                     if !self.var2num.contains_key(arg) {
-                        let arg_dest = if self.will_be_written_later(instr_idx, arg.clone(), block) {
+                        let arg_dest = if self.will_be_written_later(instr_idx, arg.clone(), block)
+                        {
                             arg.clone()
                         } else {
                             arg.clone()
@@ -355,11 +324,13 @@ impl LocalValueNumbering {
                         self.val_idx += 1;
                     }
                 });
-                let value = match instr {
-                    Instruction::Constant { value, const_type, .. } => {
-                        Value::Const(ConstOps::Const, value.clone().into(), const_type.clone())
-                    }
-                    Instruction::Value { op, args, funcs, .. } => {
+                let mut value = match instr {
+                    Instruction::Constant {
+                        value, const_type, ..
+                    } => Value::Const(ConstOps::Const, value.clone().into(), const_type.clone()),
+                    Instruction::Value {
+                        op, args, funcs, ..
+                    } => {
                         let args = args.iter().map(|arg| {
                             let rename = self.src2rename.get(arg).unwrap_or(arg);
                             self.var2num.get(rename).unwrap().clone()
@@ -367,10 +338,12 @@ impl LocalValueNumbering {
                         });
                         match op {
                             ValueOps::Call => Value::Call(funcs.to_vec(), args.collect()),
-                            _ => Value::Expr(op.clone().into(), args.collect())
+                            _ => Value::Expr(op.clone().into(), args.collect()),
                         }
                     }
-                    Instruction::Effect { op, args, funcs, .. } => {
+                    Instruction::Effect {
+                        op, args, funcs, ..
+                    } => {
                         let args = args.iter().map(|arg| {
                             let rename = self.src2rename.get(arg).unwrap_or(arg);
                             self.var2num.get(rename).unwrap().clone()
@@ -378,10 +351,12 @@ impl LocalValueNumbering {
                         });
                         match op {
                             EffectOps::Call => Value::Call(funcs.to_vec(), args.collect()),
-                            _ => Value::Expr(op.clone().into(), args.collect())
+                            _ => Value::Expr(op.clone().into(), args.collect()),
                         }
                     }
                 };
+
+                self.canonicalize(&mut value);
 
                 // println!("value for {instr} is {:#?}", value);
 
@@ -389,7 +364,10 @@ impl LocalValueNumbering {
                 let res = self.table.get(&value);
                 let instr = if let Some((idx, var)) = res {
                     // value was in the table, use id op on that unless call or free
-                    if matches!(value, Value::Call(_, _)) || self.is_free(&value) || self.is_alloc(&value) {
+                    if matches!(value, Value::Call(_, _))
+                        || self.is_free(&value)
+                        || self.is_alloc(&value)
+                    {
                         // println!("found call in table for {instr} with value {:#?}", value);
                         self.rebuild_instr_args(instr, Self::get_args(instr))
                     } else {
@@ -398,19 +376,29 @@ impl LocalValueNumbering {
                         self.var2num.insert(old_dest.clone(), *idx);
 
                         let val_name = var;
-                        self.rebuild_instr_name(instr, old_dest.clone(), val_name.to_string(), old_type.clone())
+                        self.rebuild_instr_name(
+                            instr,
+                            old_dest.clone(),
+                            val_name.to_string(),
+                            old_type.clone(),
+                        )
                     }
                 } else if let Some((old_dest, old_type)) = Self::get_dest_typ(instr) {
                     // instr has a dest
                     Self::get_args(instr).iter().for_each(|arg| {
                         if !self.var2num.contains_key(arg) {
-                            let arg_dest = if self.will_be_written_later(instr_idx, arg.clone(), block) {
-                                arg.clone()
-                            } else {
-                                arg.clone()
-                            };
+                            let arg_dest =
+                                if self.will_be_written_later(instr_idx, arg.clone(), block) {
+                                    arg.clone()
+                                } else {
+                                    arg.clone()
+                                };
                             let idx = self.val_idx;
-                            self.add_table(idx, Value::Argument(arg_dest.clone()), arg_dest.clone());
+                            self.add_table(
+                                idx,
+                                Value::Argument(arg_dest.clone()),
+                                arg_dest.clone(),
+                            );
                             self.var2num.insert(arg_dest, idx);
                             self.val_idx += 1;
                         }
@@ -419,12 +407,7 @@ impl LocalValueNumbering {
                         .iter()
                         .map(|arg| {
                             let rename = self.src2rename.get(arg).unwrap_or(arg);
-                            let name = 
-                                self
-                                .var2num
-                                .get(rename)
-                                .unwrap()
-                                .clone();
+                            let name = self.var2num.get(rename).unwrap().clone();
                             name.clone()
                         })
                         .map(|num| self.get_var_from_num(num))
@@ -446,13 +429,13 @@ impl LocalValueNumbering {
                     // instr has no dest
                     Self::get_args(instr).iter().for_each(|arg| {
                         if !self.var2num.contains_key(arg) {
-                            let arg_dest = if self.will_be_written_later(instr_idx, arg.clone(), block) {
-                                arg.clone()
-                            } else {
-                                arg.clone()
-                            };
+                            let arg_dest = arg.clone();
                             let idx = self.val_idx;
-                            self.add_table(idx, Value::Argument(arg_dest.clone()), arg_dest.clone());
+                            self.add_table(
+                                idx,
+                                Value::Argument(arg_dest.clone()),
+                                arg_dest.clone(),
+                            );
                             self.var2num.insert(arg_dest, idx);
                             self.val_idx += 1;
                         }
@@ -461,12 +444,7 @@ impl LocalValueNumbering {
                         .iter()
                         .map(|arg| {
                             let rename = self.src2rename.get(arg).unwrap_or(arg);
-                            let name = 
-                                self
-                                .var2num
-                                .get(rename)
-                                .unwrap()
-                                .clone();
+                            let name = self.var2num.get(rename).unwrap().clone();
                             name.clone()
                         })
                         .map(|num| self.get_var_from_num(num))
@@ -511,11 +489,14 @@ impl LocalValueNumbering {
         self.args = args.iter().map(|arg| arg.name.clone()).collect();
         self.before_pass();
 
-        let blocks = blocks.iter().map(|block| { 
-            self.clear();
-            self.before_pass();
-            self.do_block(block) 
-        }).collect();
+        let blocks = blocks
+            .iter()
+            .map(|block| {
+                self.clear();
+                self.before_pass();
+                self.do_block(block)
+            })
+            .collect();
         self.cfg.blocks = blocks;
         self.cfg.name = name.clone();
         self.cfg.edges = edges.clone();

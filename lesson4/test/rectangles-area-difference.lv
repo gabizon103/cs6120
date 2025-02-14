@@ -1,0 +1,30 @@
+INS main
+block0 (main):
+y2
+x2
+x1
+y1
+
+block1 (flip):
+res
+
+block2 (end):
+res
+
+OUTS main
+block0 (main):
+res
+
+block1 (flip):
+res
+
+block2 (end):
+
+INS area
+block0 (area):
+x
+y
+
+OUTS area
+block0 (area):
+

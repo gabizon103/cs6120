@@ -1,0 +1,33 @@
+INS hanoi
+block0 (hanoi):
+dst
+spare
+disks
+src
+
+block1 (then):
+spare
+disks
+dst
+src
+
+block2 (else):
+
+OUTS hanoi
+block0 (hanoi):
+dst
+spare
+disks
+src
+
+block1 (then):
+
+block2 (else):
+
+INS main
+block0 (main):
+disks
+
+OUTS main
+block0 (main):
+

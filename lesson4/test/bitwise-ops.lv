@@ -1,0 +1,240 @@
+INS mod2
+block0 (mod2):
+a
+
+OUTS mod2
+block0 (mod2):
+
+INS loop_subroutine
+block0 (loop_subroutine):
+a
+c
+b
+
+block1 (loop):
+c
+n
+b
+two
+a
+i
+one
+ans
+to_add
+
+block2 (here):
+c
+to_add
+a
+one
+i
+b
+n
+two
+ans
+
+block3 (doOr):
+ans
+n
+to_add
+a
+i
+mod2a
+one
+mod2b
+c
+b
+two
+
+block4 (stay):
+i
+n
+b
+c
+to_add
+cond_add
+one
+two
+ans
+a
+
+block5 (add):
+c
+n
+to_add
+i
+a
+one
+b
+ans
+two
+
+block6 (end_loop):
+a
+ans
+b
+one
+c
+to_add
+two
+i
+n
+
+block7 (end):
+ans
+
+OUTS loop_subroutine
+block0 (loop_subroutine):
+b
+two
+one
+ans
+a
+c
+to_add
+n
+i
+
+block1 (loop):
+c
+n
+b
+two
+a
+i
+one
+ans
+to_add
+
+block2 (here):
+n
+a
+i
+to_add
+two
+mod2a
+ans
+cond_add
+one
+b
+mod2b
+c
+
+block3 (doOr):
+ans
+cond_add
+n
+to_add
+a
+i
+one
+c
+b
+two
+
+block4 (stay):
+b
+i
+ans
+c
+n
+one
+a
+two
+to_add
+
+block5 (add):
+c
+n
+to_add
+i
+a
+one
+b
+ans
+two
+
+block6 (end_loop):
+to_add
+i
+two
+n
+c
+one
+b
+ans
+a
+
+block7 (end):
+
+INS OR
+block0 (OR):
+b
+a
+
+OUTS OR
+block0 (OR):
+
+INS AND
+block0 (AND):
+a
+b
+
+OUTS AND
+block0 (AND):
+
+INS XOR
+block0 (XOR):
+a
+b
+
+OUTS XOR
+block0 (XOR):
+
+INS main
+block0 (main):
+b
+c
+a
+
+block1 (useless_lbl):
+a
+b
+equal
+
+block2 (and_op):
+a
+b
+
+block3 (or_op):
+b
+a
+
+block4 (xor_op):
+a
+b
+
+block5 (end):
+ans
+
+OUTS main
+block0 (main):
+equal
+a
+b
+
+block1 (useless_lbl):
+b
+a
+
+block2 (and_op):
+ans
+
+block3 (or_op):
+ans
+
+block4 (xor_op):
+ans
+
+block5 (end):
+

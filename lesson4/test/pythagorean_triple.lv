@@ -1,0 +1,82 @@
+INS main
+block0 (main):
+n
+
+block1 (outer_loop):
+n
+one
+n_sq
+a
+
+block2 (inner_loop):
+b
+one
+a
+n
+n_sq
+
+block3 (found):
+a
+n_sq
+n
+b
+one
+
+block4 (inner_continue):
+one
+n
+b
+a
+n_sq
+
+block5 (outer_continue):
+n_sq
+one
+a
+n
+
+block6 (finish):
+
+OUTS main
+block0 (main):
+n
+a
+n_sq
+one
+
+block1 (outer_loop):
+n
+one
+n_sq
+a
+b
+
+block2 (inner_loop):
+a
+one
+b
+n_sq
+n
+
+block3 (found):
+b
+n
+a
+n_sq
+one
+
+block4 (inner_continue):
+a
+one
+b
+n
+n_sq
+
+block5 (outer_continue):
+one
+n_sq
+n
+a
+
+block6 (finish):
+

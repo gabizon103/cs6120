@@ -1,0 +1,100 @@
+INS main
+block0 (main):
+input
+
+block1 (for.cond.1):
+result
+v1
+i
+n
+v0
+sum
+
+block2 (for.body):
+v1
+i
+n
+v0
+sum
+result
+
+block3 (if.body):
+i
+sum
+n
+v1
+qut
+result
+v0
+
+block4 (for.incre):
+i
+result
+sum
+v1
+n
+v0
+
+block5 (for.end):
+v0
+result
+n
+sum
+
+block6 (if.success):
+v0
+
+block7 (if.failure.end):
+result
+
+OUTS main
+block0 (main):
+i
+v0
+sum
+n
+result
+v1
+
+block1 (for.cond.1):
+v1
+i
+n
+v0
+sum
+result
+
+block2 (for.body):
+result
+sum
+v1
+n
+v0
+i
+qut
+
+block3 (if.body):
+n
+result
+i
+sum
+v0
+v1
+
+block4 (for.incre):
+v0
+i
+sum
+result
+v1
+n
+
+block5 (for.end):
+v0
+result
+
+block6 (if.success):
+result
+
+block7 (if.failure.end):
+

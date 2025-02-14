@@ -1,0 +1,59 @@
+INS main
+block0 (main):
+x
+y
+
+block1 (then.1):
+x
+
+block2 (else.1):
+
+block3 (endif.1):
+
+block4 (foreverloop):
+y
+greater
+x
+
+block5 (then.2):
+greater
+
+block6 (else.2):
+x
+greater
+y
+
+block7 (loopend):
+
+OUTS main
+block0 (main):
+x
+
+block1 (then.1):
+
+block2 (else.1):
+
+block3 (endif.1):
+
+block4 (foreverloop):
+y
+x
+greater
+
+block5 (then.2):
+
+block6 (else.2):
+x
+y
+greater
+
+block7 (loopend):
+
+INS getMod
+block0 (getMod):
+val
+mod
+
+OUTS getMod
+block0 (getMod):
+
