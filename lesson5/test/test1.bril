@@ -1,0 +1,25 @@
+@main {
+  i: int = const 0;
+  ten: int = const 10;
+  five: int = const 5;
+  one: int = const 1;
+  ninety_nine: int = const 99;
+
+  .loop_cond:
+  cond: bool = lt i ten;
+  br cond .body .exit;
+
+  .body:
+  cond_i_eq_5: bool = eq i five;
+  br cond_i_eq_5 .then .endif;
+
+  .then:
+  print i;
+
+  .endif:
+  i: int = add i one;
+  jmp .loop_cond;
+
+  .exit:
+  print ninety_nine;
+}

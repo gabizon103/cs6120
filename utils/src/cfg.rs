@@ -98,8 +98,8 @@ pub fn get_dest(instr: &Instruction) -> Option<String> {
 
 pub fn get_uses(instr: &Instruction) -> Vec<String> {
     match instr {
-        Instruction::Constant {..} => vec![],
-        Instruction::Value { args, ..} => args.clone(),
-        Instruction::Effect {args, ..} => args.clone()
+        Instruction::Constant { .. } => vec![],
+        Instruction::Value { args, .. } => args.clone(),
+        Instruction::Effect { args, .. } => args.clone(),
     }
 }

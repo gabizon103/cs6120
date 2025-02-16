@@ -277,7 +277,7 @@ impl ControlFlow {
         let mut exit = BasicBlock::default();
         exit.name = "exit".to_string();
         self.blocks.push(exit);
-        let exit_idx = self.blocks.len()-1;
+        let exit_idx = self.blocks.len() - 1;
         self.edges.push(Edge::None);
         self.edges.iter_mut().enumerate().for_each(|(idx, edge)| {
             if matches!(edge, Edge::None) && idx != exit_idx {
@@ -345,7 +345,7 @@ impl ControlFlow {
                     },
                 }
             }
-        };
+        }
         // self.create_single_exit();
     }
 
