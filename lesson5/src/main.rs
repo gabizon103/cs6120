@@ -21,12 +21,19 @@ pub struct Opts {
     /// output directory for graphs
     #[argh(option, short = 'o')]
     pub output: Option<PathBuf>,
+    /// check for correctness
+    #[argh(switch, short = 'c', long = "check")]
+    pub check: bool,
+    /// display frontier
+    #[argh(switch, short = 'f', long = "frontier")]
+    pub frontier: bool
 }
 
 fn main() {
     let opts: Opts = argh::from_env();
     let input = opts.input;
     let output = opts.output;
+    // let check = opts.check;
     let input = read_input(input);
 
     let (all_blocks, _) = form_blocks_from_read(input);
@@ -38,11 +45,20 @@ fn main() {
             cfg
         })
         .collect();
-    let doms = cfgs.iter().map(|cfg| {
-        let mut db = DomBuilder::new(cfg);
-        db.build();
-        db
-    });
+    let doms: Vec<DomBuilder> = cfgs
+        .iter()
+        .map(|cfg| {
+            let mut db = DomBuilder::new(cfg);
+            if opts.check {
+                db.compare_all();
+            }
+            db.build();
+            if opts.frontier {
+                db.print_frontier();
+            }
+            db
+        })
+        .collect();
 
     if let Some(p) = output {
         let mut graph = Graph::DiGraph {
@@ -50,7 +66,7 @@ fn main() {
             strict: true,
             stmts: vec![],
         };
-        doms.enumerate().for_each(|(idx, db)| {
+        doms.iter().enumerate().for_each(|(idx, db)| {
             let sg = db.to_dot(idx);
             graph.add_stmt(sg.into());
         });

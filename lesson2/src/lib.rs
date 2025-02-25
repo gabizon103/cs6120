@@ -137,6 +137,16 @@ pub enum Edge {
     None,
 }
 
+impl Edge {
+    pub fn get_dests(&self) -> Vec<usize> {
+        match self {
+            Edge::Uncond(idx) => vec![*idx],
+            Edge::Cond { true_targ, false_targ } => vec![*true_targ, *false_targ],
+            Edge::None => vec![],
+        }
+    }
+}
+
 impl std::fmt::Display for Edge {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {

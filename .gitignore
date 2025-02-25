@@ -2,3 +2,4 @@ target/
 *.png
 *.json
 Cargo.lock
+*.out
