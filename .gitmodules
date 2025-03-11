@@ -1,0 +1,3 @@
+[submodule "lesson7/llvm-pass-skeleton"]
+	path = lesson7/llvm-pass-skeleton
+	url = git@github.com:gabizon103/llvm-pass-skeleton.git
