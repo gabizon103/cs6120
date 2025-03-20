@@ -3,3 +3,6 @@ target/
 *.json
 Cargo.lock
 *.out
+bril
+examples-build/
+build/
