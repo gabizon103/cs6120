@@ -130,7 +130,10 @@ where
     pub outs: Vec<ValType>,
 }
 
-impl<ValType> std::fmt::Debug for AnalysisFramework<ValType> where ValType : Default + Clone + PartialEq + Debug {
+impl<ValType> std::fmt::Debug for AnalysisFramework<ValType>
+where
+    ValType: Default + Clone + PartialEq + Debug,
+{
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         writeln!(f, "INS: {}", self.cfg.name)?;
         self.ins.iter().enumerate().for_each(|(idx, map)| {

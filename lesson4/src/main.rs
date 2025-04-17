@@ -87,10 +87,8 @@ impl FromStr for Analysis {
     }
 }
 
-fn main() {
-    let opts: Opts = argh::from_env();
+fn run(opts: Opts) {
     let input = opts.input;
-    let output = opts.output;
     let analysis = &opts.analysis;
     let input = read_input(input);
     let suppress_output = opts.supress_output;
@@ -102,7 +100,6 @@ fn main() {
         .filter_level(log::LevelFilter::Info)
         .target(env_logger::Target::Stderr)
         .init();
-
 
     let (all_blocks, _) = form_blocks_from_read(input);
     let cfgs: Vec<ControlFlow> = all_blocks
@@ -139,4 +136,9 @@ fn main() {
             }
         }
     });
+}
+
+fn main() {
+    let opts: Opts = argh::from_env();
+    run(opts);
 }
