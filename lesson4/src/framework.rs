@@ -5,6 +5,7 @@ use lesson2::{BasicBlock, ControlFlow};
 use utils::cfg::{get_dest, get_uses};
 
 use crate::reaching_defs::InstrIdx;
+use std::fmt::Debug;
 
 pub enum Direction {
     Forward,
@@ -121,7 +122,7 @@ impl DataFlowAnalysis<HashSet<String>> for LiveVars {
 
 pub struct AnalysisFramework<ValType>
 where
-    ValType: Default + Clone + PartialEq,
+    ValType: Default + Clone + PartialEq + Debug,
 {
     pub cfg: ControlFlow,
     pub worklist: VecDeque<usize>,
@@ -129,9 +130,28 @@ where
     pub outs: Vec<ValType>,
 }
 
+impl<ValType> std::fmt::Debug for AnalysisFramework<ValType> where ValType : Default + Clone + PartialEq + Debug {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        writeln!(f, "INS: {}", self.cfg.name)?;
+        self.ins.iter().enumerate().for_each(|(idx, map)| {
+            let name = &self.cfg.blocks.get(idx).unwrap().name;
+            let _ = writeln!(f, "block{idx} ({name}):");
+            let _ = writeln!(f, "{:?}", map);
+        });
+        writeln!(f, "OUTS: {}", self.cfg.name)?;
+        self.outs.iter().enumerate().for_each(|(idx, map)| {
+            let name = &self.cfg.blocks.get(idx).unwrap().name;
+            let _ = writeln!(f, "block{idx} ({name}):");
+            let _ = writeln!(f, "{:#?}", map);
+        });
+
+        Ok(())
+    }
+}
+
 impl<ValType> AnalysisFramework<ValType>
 where
-    ValType: Default + Clone + PartialEq,
+    ValType: Default + Clone + PartialEq + Debug,
 {
     pub fn new(cfg: ControlFlow, init: ValType) -> Self {
         let mut worklist = VecDeque::default();
@@ -155,7 +175,7 @@ where
         }
     }
 
-    pub fn worklist(&mut self, analysis: impl DataFlowAnalysis<ValType>) {
+    pub fn worklist(&mut self, analysis: &impl DataFlowAnalysis<ValType>) {
         match analysis.direction() {
             Direction::Forward => {
                 while !self.worklist.is_empty() {

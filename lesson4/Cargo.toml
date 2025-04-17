@@ -4,9 +4,12 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-utils = { path = "../utils" }
-lesson2 = { path = "../lesson2" }
+utils.workspace = true
+lesson2.workspace = true
 bril-rs.workspace = true
 argh.workspace = true
 itertools.workspace = true
+log = "0.4.27"
+env_logger = "0.11.8"
+struct-variant = "1.0.2"
 

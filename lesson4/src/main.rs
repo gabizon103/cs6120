@@ -9,10 +9,45 @@ use framework::{AnalysisFramework, LiveVars, ReachingDefsGeneric};
 use itertools::Itertools;
 use lesson2::ControlFlow;
 use reaching_defs::ReachingDefs;
+use struct_variant::struct_variant;
 use utils::{cfg::form_blocks_from_read, cli::read_input};
 
-pub mod framework;
-pub mod reaching_defs;
+mod framework;
+mod reaching_defs;
+
+#[macro_export]
+/// Logs the amount of time it took to run the expression.
+macro_rules! log_time {
+    ($e:expr) => {{
+        let (r, t) = $crate::time!($e);
+        log::info!("{}: {}ms", stringify!($e), t.as_millis());
+        r
+    }};
+    // Variant to log the time with a custom message.
+    ($e:expr, $msg:expr) => {{
+        let (r, t) = $crate::time!($e);
+        log::info!("{}: {}ms", $msg, t.as_millis());
+        r
+    }};
+    // Variant to log the time with a custom message only when a bound is reached
+    ($e:expr, $msg:expr; $min_time:expr) => {{
+        let (r, t) = $crate::time!($e);
+        if t.as_millis() > $min_time {
+            log::info!("{}: {}ms", $msg, t.as_millis());
+        }
+        r
+    }};
+}
+
+#[macro_export]
+/// Return the result of the computation and the time it took to run it.
+macro_rules! time {
+    ($e:expr) => {{
+        let t = std::time::Instant::now();
+        let r = $e;
+        (r, t.elapsed())
+    }};
+}
 
 /// dataflow analysis
 #[derive(FromArgs)]
@@ -26,10 +61,17 @@ pub struct Opts {
     /// count stats
     #[argh(option, long = "analysis")]
     pub analysis: Analysis,
+    /// suppress output
+    #[argh(switch, short = 's')]
+    pub supress_output: bool,
+    /// set log level
+    #[argh(option, long = "log", default = "log::LevelFilter::Warn")]
+    pub log_level: log::LevelFilter,
 }
 
+#[struct_variant]
 pub enum Analysis {
-    ReachingDefs,
+    ReachingDefsGeneric,
     LiveVars,
 }
 
@@ -38,8 +80,8 @@ impl FromStr for Analysis {
 
     fn from_str(s: &str) -> Result<Self, Self::Err> {
         match s {
-            "reaching-defs" => Ok(Self::ReachingDefs),
-            "live-vars" => Ok(Self::LiveVars),
+            "reaching-defs" => Ok(Analysis::ReachingDefsGeneric(ReachingDefsGeneric::new())),
+            "live-vars" => Ok(Analysis::LiveVars(LiveVars::new())),
             _ => Err(format!("unknown pass")),
         }
     }
@@ -49,8 +91,18 @@ fn main() {
     let opts: Opts = argh::from_env();
     let input = opts.input;
     let output = opts.output;
-    let analysis = opts.analysis;
+    let analysis = &opts.analysis;
     let input = read_input(input);
+    let suppress_output = opts.supress_output;
+
+    env_logger::Builder::from_default_env()
+        .format_timestamp(None)
+        .format_module_path(false)
+        .format_target(false)
+        .filter_level(log::LevelFilter::Info)
+        .target(env_logger::Target::Stderr)
+        .init();
+
 
     let (all_blocks, _) = form_blocks_from_read(input);
     let cfgs: Vec<ControlFlow> = all_blocks
@@ -63,96 +115,27 @@ fn main() {
         .collect();
 
     cfgs.into_iter().for_each(|cfg| {
-        let name = cfg.name.clone();
         match analysis {
-            Analysis::ReachingDefs => {
+            Analysis::ReachingDefsGeneric(rd) => {
                 let mut framework: AnalysisFramework<HashMap<String, HashSet<(usize, usize)>>> =
                     AnalysisFramework::new(cfg, HashMap::new());
-                let rd = ReachingDefsGeneric::new();
-                framework.worklist(rd);
-                // let mut rd = ReachingDefs::new(cfg);
-                // rd.worklist();
-                println!("INS {}", name);
-                framework.ins.iter().enumerate().for_each(|(idx, map)| {
-                    let name = &framework.cfg.blocks.get(idx).unwrap().name;
-                    println!("block{idx} ({name}):");
-                    map.iter().for_each(|(var, set)| {
-                        let set = set
-                            .iter()
-                            .map(|(blk_idx, instr_idx)| {
-                                if (*blk_idx, *instr_idx) == (usize::MAX, usize::MAX) {
-                                    format!("  function args")
-                                } else {
-                                    let instr = framework
-                                        .cfg
-                                        .blocks
-                                        .get(*blk_idx)
-                                        .unwrap()
-                                        .instrs
-                                        .get(*instr_idx)
-                                        .unwrap();
-                                    format!("  {instr}")
-                                }
-                            })
-                            .collect_vec()
-                            .join("\n");
-                        println!("var {var} defined by:\n{set}");
-                    });
-                    println!("");
-                });
 
-                println!("OUTS {name}");
-                framework.outs.iter().enumerate().for_each(|(idx, map)| {
-                    let name = &framework.cfg.blocks.get(idx).unwrap().name;
-                    println!("block{idx} ({name}):");
-                    map.iter().for_each(|(var, set)| {
-                        let set = set
-                            .iter()
-                            .map(|(blk_idx, instr_idx)| {
-                                if (*blk_idx, *instr_idx) == (usize::MAX, usize::MAX) {
-                                    format!("  function args")
-                                } else {
-                                    let instr = framework
-                                        .cfg
-                                        .blocks
-                                        .get(*blk_idx)
-                                        .unwrap()
-                                        .instrs
-                                        .get(*instr_idx)
-                                        .unwrap();
-                                    format!("  {instr}")
-                                }
-                            })
-                            .collect_vec()
-                            .join("\n");
-                        println!("var {var} defined by:\n{set}");
-                    });
-                    println!("");
-                });
+                // this is the real computation
+                log_time!(framework.worklist(rd), "reaching-defs");
+
+                if !suppress_output {
+                    println!("{:#?}", framework);
+                }
             }
-            Analysis::LiveVars => {
+            Analysis::LiveVars(lv) => {
                 let mut framework: AnalysisFramework<HashSet<String>> =
                     AnalysisFramework::new(cfg, HashSet::new());
-                let lv = LiveVars::new();
-                framework.worklist(lv);
-                println!("INS {name}");
-                framework.ins.iter().enumerate().for_each(|(idx, set)| {
-                    let name = &framework.cfg.blocks.get(idx).unwrap().name;
-                    println!("block{idx} ({name}):");
-                    set.iter().for_each(|set_elt| {
-                        println!("{set_elt}");
-                    });
-                    println!("");
-                });
-                println!("OUTS {name}");
-                framework.outs.iter().enumerate().for_each(|(idx, set)| {
-                    let name = &framework.cfg.blocks.get(idx).unwrap().name;
-                    println!("block{idx} ({name}):");
-                    set.iter().for_each(|set_elt| {
-                        println!("{set_elt}");
-                    });
-                    println!("");
-                });
+
+                log_time!(framework.worklist(lv), "live-vars");
+
+                if !suppress_output {
+                    println!("{:#?}", framework);
+                }
             }
         }
     });

@@ -8,16 +8,16 @@ use utils;
 
 pub type InstrIdx = (usize, usize);
 
-pub struct ReachingDefs {
-    pub cfg: ControlFlow,
+pub struct ReachingDefs<'a> {
+    pub cfg: &'a ControlFlow,
     pub worklist: VecDeque<usize>, // indices into cfg.blocks
     // ins and outs are mappings from var names to sets of definitions
     pub ins: Vec<HashMap<String, HashSet<InstrIdx>>>, // indexed by block index, set of defs that reach that block
     pub outs: Vec<HashMap<String, HashSet<InstrIdx>>>,
 }
 
-impl ReachingDefs {
-    pub fn new(cfg: ControlFlow) -> Self {
+impl<'a> ReachingDefs<'a> {
+    pub fn new(cfg: &'a ControlFlow) -> Self {
         let mut worklist = VecDeque::default();
         let mut ins = Vec::default();
         let mut outs = Vec::default();
