@@ -107,6 +107,18 @@ pub fn get_dest(instr: &Instruction) -> Option<String> {
     }
 }
 
+pub fn set_dest(instr: &mut Instruction, new_dest: String) {
+    match instr {
+        Instruction::Constant { dest, .. } => {
+            *dest = new_dest;
+        },
+        Instruction::Value { dest, .. } => {
+            *dest = new_dest;
+        },
+        _ => ()
+    }
+}
+
 pub fn get_uses(instr: &Instruction) -> Vec<String> {
     match instr {
         Instruction::Constant { .. } => vec![],
