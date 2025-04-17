@@ -1,10 +1,9 @@
 #include <stdio.h>
 
 int main() {
-  int j;
-  for (int i = 0; i < 5000000; i ++) {
-    int j = 35*i;
-    // printf("%d\n", j);
+  int j = 0;
+  for (int i = 0; i < 50000000; i ++) {
+    j = 35*i;
   }
   return j;
 }

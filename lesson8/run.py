@@ -2,28 +2,32 @@
 import os
 import time
 import subprocess
+import sys
 
 def main():
+    filepath = sys.argv[1]
+    name = filepath.split('/')[-1].split('.')[0]
+
     # build the pass
     subprocess.run(['./build.sh'])
 
     # compile without optimizations
-    subprocess.run(['./compile.sh', 'examples/a.c'])
+    subprocess.run(['./compile.sh', f'{filepath}'])
 
     # compile with optimizations
-    subprocess.run(['./compile2.sh', 'examples/a.c'])
+    subprocess.run(['./compile2.sh', f'{filepath}'])
 
     avg_unopt = 0
     avg_opt = 0
     for _ in range(5):
         start = time.perf_counter()
-        subprocess.run(['./examples-build/a-unopt.o'])
+        subprocess.run([f'./examples-build/{name}-unopt.o'])
         end = time.perf_counter()
         elapsed = end - start
         avg_unopt += elapsed
 
         start = time.perf_counter()
-        subprocess.run(['./examples-build/a-opt.o'])
+        subprocess.run([f'./examples-build/{name}-opt.o'])
         end = time.perf_counter()
         elapsed = end - start
         avg_opt += elapsed

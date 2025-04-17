@@ -88,6 +88,17 @@ pub fn is_terminator_or_label(code: &Code) -> bool {
     }
 }
 
+pub fn is_branch(code: &Instruction) -> bool {
+    match code {
+        Instruction::Constant { .. } => false,
+        Instruction::Value { .. } => false,
+        Instruction::Effect { op, ..} => match op {
+            bril_rs::EffectOps::Jump => true,
+            _ => false
+        },
+    }
+}
+
 pub fn get_dest(instr: &Instruction) -> Option<String> {
     match instr {
         Instruction::Constant { dest, .. } => Some(dest.to_string()),

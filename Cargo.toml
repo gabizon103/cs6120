@@ -1,5 +1,5 @@
 [workspace]
-members = ["lesson2", "lesson3", "lesson4", "lesson5", "utils"]
+members = [ "lesson12","lesson2", "lesson3", "lesson4", "lesson5", "lesson6", "utils"]
 resolver = "2"
 
 [workspace.dependencies]
@@ -17,3 +17,6 @@ serde_json = "1.0.138"
 itertools = "0.14.0"
 graphviz-rust = "0.9.3"
 linked-hash-map = "0.5.6"
+lesson4 = { path = "./lesson4" }
+lesson2 = { path = "./lesson2" }
+utils = { path = "./utils" }

@@ -1,0 +1,11 @@
+[package]
+name = "lesson12"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+utils.workspace = true
+argh.workspace = true
+bril-rs.workspace = true
+serde_json.workspace = true
+serde = "1.0.219"

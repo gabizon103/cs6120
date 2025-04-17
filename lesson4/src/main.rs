@@ -6,9 +6,7 @@ use std::{
 
 use argh::FromArgs;
 use framework::{AnalysisFramework, LiveVars, ReachingDefsGeneric};
-use itertools::Itertools;
 use lesson2::ControlFlow;
-use reaching_defs::ReachingDefs;
 use struct_variant::struct_variant;
 use utils::{cfg::form_blocks_from_read, cli::read_input};
 

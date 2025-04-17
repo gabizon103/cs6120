@@ -1,0 +1,31 @@
+@main(x: int):int {
+  one: int = const 1;
+  y:int = add x one;
+  z: int = const 0;
+  hunnit:int = const 100;
+  cond: bool = lt x hunnit;
+  br cond .true .false;
+
+  .true:
+  z:int = call @f y;
+  jmp .return;
+
+  .false:
+  z:int = call @g y;
+  jmp .return;
+
+  .return:
+  ret z;
+}
+
+@f(a: int):int {
+  one: int = const 1;
+  s: int = sub a one;
+  ret s;
+}
+
+@g(a: int):int {
+  one: int = const 1;
+  s: int = add a one;
+  ret s;
+}
