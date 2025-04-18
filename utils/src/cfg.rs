@@ -107,6 +107,14 @@ pub fn is_ret(code: &Instruction) -> bool {
     }
 }
 
+pub fn is_call(code: &Instruction) -> bool {
+    match code {
+        Instruction::Constant {..} => false,
+        Instruction::Value { .. } => false,
+        Instruction::Effect {op, ..} => *op == EffectOps::Call
+    }
+}
+
 pub fn get_dest(instr: &Instruction) -> Option<String> {
     match instr {
         Instruction::Constant { dest, .. } => Some(dest.to_string()),
