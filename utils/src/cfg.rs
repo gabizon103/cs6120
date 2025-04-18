@@ -110,7 +110,7 @@ pub fn is_ret(code: &Instruction) -> bool {
 pub fn is_call(code: &Instruction) -> bool {
     match code {
         Instruction::Constant {..} => false,
-        Instruction::Value { .. } => false,
+        Instruction::Value { op, .. } => *op == ValueOps::Call,
         Instruction::Effect {op, ..} => *op == EffectOps::Call
     }
 }
