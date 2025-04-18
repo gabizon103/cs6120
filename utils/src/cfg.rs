@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use bril_rs::{Argument, Code, Function, Instruction, Program};
+use bril_rs::{Argument, Code, EffectOps, Function, Instruction, Program, ValueOps};
 use lesson2::BasicBlock;
 
 pub fn form_blocks_from_read<R: std::io::Read>(
@@ -96,6 +96,14 @@ pub fn is_branch(code: &Instruction) -> bool {
             bril_rs::EffectOps::Jump => true,
             _ => false
         },
+    }
+}
+
+pub fn is_ret(code: &Instruction) -> bool {
+    match code {
+        Instruction::Constant {..} => false,
+        Instruction::Value { .. } => false,
+        Instruction::Effect {op, ..} => *op == EffectOps::Return
     }
 }
 
