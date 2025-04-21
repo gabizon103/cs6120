@@ -142,7 +142,10 @@ impl Edge {
     pub fn get_dests(&self) -> Vec<usize> {
         match self {
             Edge::Uncond(idx) => vec![*idx],
-            Edge::Cond { true_targ, false_targ } => vec![*true_targ, *false_targ],
+            Edge::Cond {
+                true_targ,
+                false_targ,
+            } => vec![*true_targ, *false_targ],
             Edge::None => vec![],
         }
     }
@@ -226,7 +229,7 @@ pub struct ControlFlow {
     #[serde(skip_deserializing)]
     pub lbl_to_block: HashMap<String, usize>,
     pub args: Vec<Argument>,
-    pub ret_type: Option<Type>
+    pub ret_type: Option<Type>,
 }
 
 impl ControlFlow {
@@ -235,7 +238,7 @@ impl ControlFlow {
         blocks: Vec<BasicBlock>,
         lbl_to_block: HashMap<String, usize>,
         args: Vec<Argument>,
-        ret_type: Option<Type>
+        ret_type: Option<Type>,
     ) -> Self {
         let mut edges = vec![];
         for _ in 0..blocks.len() {
@@ -247,7 +250,7 @@ impl ControlFlow {
             edges,
             lbl_to_block,
             args,
-            ret_type
+            ret_type,
         }
     }
 
@@ -298,6 +301,23 @@ impl ControlFlow {
                 *edge = Edge::Uncond(exit_idx);
             }
         });
+    }
+
+    pub fn add_rets(&mut self) {
+        if self.ret_type.is_none() {
+            self.edges.iter().enumerate().for_each(|(idx, edge)| {
+                if matches!(edge, Edge::None) {
+                    let blk = &mut self.blocks[idx];
+                    blk.instrs.push(Instruction::Effect {
+                        args: vec![],
+                        funcs: vec![],
+                        labels: vec![],
+                        op: bril_rs::EffectOps::Return,
+                        pos: None,
+                    });
+                }
+            });
+        }
     }
 
     pub fn flatten_blocks(&self) -> Vec<Code> {
