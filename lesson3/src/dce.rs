@@ -177,6 +177,7 @@ impl DeadCodeElim {
                 edges: func.edges.clone(),
                 lbl_to_block: func.lbl_to_block.clone(),
                 args: func.args.clone(),
+                ret_type: func.ret_type.clone(),
             },
             !to_remove.is_empty(),
         )
@@ -198,6 +199,7 @@ impl DeadCodeElim {
             edges,
             lbl_to_block,
             args,
+            ret_type
         } = cfg;
 
         self.cfg = self.remove_unused_iter(cfg)

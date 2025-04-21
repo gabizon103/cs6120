@@ -1,6 +1,6 @@
 use std::collections::HashMap;
 
-use bril_rs::{Argument, Code, EffectOps, Function, Instruction, Program, ValueOps};
+use bril_rs::{Argument, Code, EffectOps, Function, Instruction, Program, Type, ValueOps};
 use lesson2::BasicBlock;
 
 pub fn form_blocks_from_read<R: std::io::Read>(
@@ -11,6 +11,7 @@ pub fn form_blocks_from_read<R: std::io::Read>(
         Vec<BasicBlock>,
         HashMap<String, usize>,
         Vec<Argument>,
+        Option<Type>
     )>,
     Program,
 ) {
@@ -27,7 +28,7 @@ pub fn form_blocks_from_read<R: std::io::Read>(
             .into_iter()
             .map(|func| {
                 let (name, blocks, lbl_to_block) = build_blocks(func.clone());
-                (name, blocks, lbl_to_block, func.args)
+                (name, blocks, lbl_to_block, func.args, func.return_type)
             })
             .collect(),
         program,

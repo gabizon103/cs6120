@@ -102,8 +102,8 @@ pub fn run(opts: Opts) {
   let (all_blocks, _) = form_blocks_from_read(input);
   let cfgs: Vec<ControlFlow> = all_blocks
       .into_iter()
-      .map(|(name, blocks, map, args)| {
-          let mut cfg = ControlFlow::new(name, blocks, map, args);
+      .map(|(name, blocks, map, args, ret_type)| {
+          let mut cfg = ControlFlow::new(name, blocks, map, args, ret_type);
           cfg.build();
           cfg
       })

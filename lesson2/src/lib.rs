@@ -107,6 +107,7 @@ pub fn form_blocks_from_read<R: std::io::Read>(
         Vec<BasicBlock>,
         HashMap<String, usize>,
         Vec<Argument>,
+        Option<Type>,
     )>,
     Program,
 ) {
@@ -123,7 +124,7 @@ pub fn form_blocks_from_read<R: std::io::Read>(
             .into_iter()
             .map(|func| {
                 let (name, blocks, lbl_to_block) = build_blocks(func.clone());
-                (name, blocks, lbl_to_block, func.args)
+                (name, blocks, lbl_to_block, func.args, func.return_type)
             })
             .collect(),
         program,
@@ -187,7 +188,7 @@ impl CFGProgram {
                 name: func.name.clone(),
                 instrs: func.flatten_blocks(),
                 args: func.args.clone(),
-                return_type: None,
+                return_type: func.ret_type.clone(),
             })
             .collect()
     }
@@ -225,6 +226,7 @@ pub struct ControlFlow {
     #[serde(skip_deserializing)]
     pub lbl_to_block: HashMap<String, usize>,
     pub args: Vec<Argument>,
+    pub ret_type: Option<Type>
 }
 
 impl ControlFlow {
@@ -233,6 +235,7 @@ impl ControlFlow {
         blocks: Vec<BasicBlock>,
         lbl_to_block: HashMap<String, usize>,
         args: Vec<Argument>,
+        ret_type: Option<Type>
     ) -> Self {
         let mut edges = vec![];
         for _ in 0..blocks.len() {
@@ -244,6 +247,7 @@ impl ControlFlow {
             edges,
             lbl_to_block,
             args,
+            ret_type
         }
     }
 
