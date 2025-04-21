@@ -186,7 +186,7 @@ impl CFGProgram {
             .map(|func| FlatFunction {
                 name: func.name.clone(),
                 instrs: func.flatten_blocks(),
-                args: vec![],
+                args: func.args.clone(),
                 return_type: None,
             })
             .collect()
