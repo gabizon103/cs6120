@@ -214,7 +214,7 @@ pub struct FlatFunction {
     pub return_type: Option<Type>,
 }
 
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Default, Serialize, Deserialize, Clone)]
 pub struct ControlFlow {
     pub name: String,
     pub blocks: Vec<BasicBlock>,
