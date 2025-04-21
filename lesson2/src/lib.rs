@@ -306,7 +306,7 @@ impl ControlFlow {
     pub fn add_rets(&mut self) {
         if self.ret_type.is_none() {
             self.edges.iter().enumerate().for_each(|(idx, edge)| {
-                if matches!(edge, Edge::None) {
+                if matches!(edge, Edge::None) && idx < self.blocks.len() {
                     let blk = &mut self.blocks[idx];
                     blk.instrs.push(Instruction::Effect {
                         args: vec![],
