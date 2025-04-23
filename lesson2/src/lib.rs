@@ -131,7 +131,7 @@ pub fn form_blocks_from_read<R: std::io::Read>(
     )
 }
 
-#[derive(Clone)]
+#[derive(Clone, Debug)]
 pub enum Edge {
     Uncond(usize),
     Cond { true_targ: usize, false_targ: usize },
