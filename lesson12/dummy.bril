@@ -6,7 +6,23 @@
   cond: bool = lt x hunnit;
   br cond .true .false;
 
+
   .true:
+  one: int = const 1;
+  two: int = const 1;
+  three: int = const 1;
+  four: int = const 1;
+  five: int = const 1;
+  six: int = const 1;
+  sev: int = const 1;
+  eight: int = const 1;
+  nine: int = const 1;
+  ten: int = const 1;
+  elevent: int = const 1;
+  twelv: int = const 1;
+  thrteen: int = const 1;
+  frteen: int = const 1;
+  fifteen: int = const 1;
   z:int = call @f y;
   jmp .return;
 
@@ -15,7 +31,8 @@
   jmp .return;
 
   .return:
-  ret z;
+  print z;
+  ret;
 }
 
 @f(a: int):int {

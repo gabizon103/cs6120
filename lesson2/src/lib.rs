@@ -61,7 +61,7 @@ fn is_terminator_or_label(code: &Code) -> bool {
 }
 
 /// Takes a function and returns its basic blocks
-fn build_blocks(func: Function) -> (String, Vec<BasicBlock>, HashMap<String, usize>) {
+pub fn build_blocks(func: Function) -> (String, Vec<BasicBlock>, HashMap<String, usize>) {
     let name = func.name;
     let mut block = BasicBlock::default();
     block.name = name.clone();
@@ -333,6 +333,53 @@ impl ControlFlow {
             });
         });
         instrs
+    }
+
+    pub fn build_without_edges(&mut self) {
+        for (idx, block) in self.blocks.iter().enumerate() {
+            if let Some(last) = block.instrs.last() {
+                match last {
+                    Instruction::Constant { .. } | Instruction::Value { .. } => {
+                        if idx == self.blocks.len() - 1 {
+                            // self.edges.insert(idx, Edge::None);
+                        } else {
+                            // self.edges.insert(idx, Edge::Uncond(idx + 1))
+                        }
+                    }
+                    Instruction::Effect { labels, op, .. } => match op {
+                        bril_rs::EffectOps::Jump => {
+                            // let targ = labels.get(0).unwrap();
+                            // let targ = self.lbl_to_block.get(targ).unwrap();
+                            // let edge = Edge::Uncond(*targ);
+                            // self.edges.insert(idx, edge);
+                        }
+                        bril_rs::EffectOps::Branch => {
+                            // let true_br = labels.get(0).unwrap();
+                            // let true_targ = self.lbl_to_block.get(true_br).unwrap();
+                            // let false_br = labels.get(1).unwrap();
+                            // let false_targ = self.lbl_to_block.get(false_br).unwrap();
+
+                            // let edge = Edge::Cond {
+                            //     true_targ: *true_targ,
+                            //     false_targ: *false_targ,
+                            // };
+                            // self.edges.insert(idx, edge);
+                        }
+                        bril_rs::EffectOps::Return => {
+                            // self.edges.insert(idx, Edge::None);
+                        }
+                        _ => {
+                            // if there are no blocks after this one
+                            // if idx == self.blocks.len() - 1 {
+                            //     self.edges.insert(idx, Edge::None);
+                            // } else {
+                            //     self.edges.insert(idx, Edge::Uncond(idx + 1))
+                            // }
+                        }
+                    },
+                }
+            }
+        }
     }
 
     pub fn build(&mut self) {

@@ -11,7 +11,7 @@ pub fn form_blocks_from_read<R: std::io::Read>(
         Vec<BasicBlock>,
         HashMap<String, usize>,
         Vec<Argument>,
-        Option<Type>
+        Option<Type>,
     )>,
     Program,
 ) {
@@ -93,26 +93,26 @@ pub fn is_branch(code: &Instruction) -> bool {
     match code {
         Instruction::Constant { .. } => false,
         Instruction::Value { .. } => false,
-        Instruction::Effect { op, ..} => match op {
+        Instruction::Effect { op, .. } => match op {
             bril_rs::EffectOps::Jump => true,
-            _ => false
+            _ => false,
         },
     }
 }
 
 pub fn is_ret(code: &Instruction) -> bool {
     match code {
-        Instruction::Constant {..} => false,
+        Instruction::Constant { .. } => false,
         Instruction::Value { .. } => false,
-        Instruction::Effect {op, ..} => *op == EffectOps::Return
+        Instruction::Effect { op, .. } => *op == EffectOps::Return,
     }
 }
 
 pub fn is_call(code: &Instruction) -> bool {
     match code {
-        Instruction::Constant {..} => false,
+        Instruction::Constant { .. } => false,
         Instruction::Value { op, .. } => *op == ValueOps::Call,
-        Instruction::Effect {op, ..} => *op == EffectOps::Call
+        Instruction::Effect { op, .. } => *op == EffectOps::Call,
     }
 }
 
@@ -128,11 +128,11 @@ pub fn set_dest(instr: &mut Instruction, new_dest: String) {
     match instr {
         Instruction::Constant { dest, .. } => {
             *dest = new_dest;
-        },
+        }
         Instruction::Value { dest, .. } => {
             *dest = new_dest;
-        },
-        _ => ()
+        }
+        _ => (),
     }
 }
 

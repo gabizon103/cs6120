@@ -178,9 +178,9 @@ impl<'a> DomBuilder<'a> {
     }
 
     pub fn print_frontier(&self) {
-        self.dom_frontier.iter().for_each(|(idx, frontier)| {
-            println!("blk {idx} frontier set: {:#?}", frontier)
-        })
+        self.dom_frontier
+            .iter()
+            .for_each(|(idx, frontier)| println!("blk {idx} frontier set: {:#?}", frontier))
     }
 
     /// Dominator tree in dot format

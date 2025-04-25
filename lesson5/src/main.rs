@@ -26,7 +26,7 @@ pub struct Opts {
     pub check: bool,
     /// display frontier
     #[argh(switch, short = 'f', long = "frontier")]
-    pub frontier: bool
+    pub frontier: bool,
 }
 
 fn main() {

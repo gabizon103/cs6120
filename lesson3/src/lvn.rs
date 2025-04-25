@@ -485,7 +485,7 @@ impl LocalValueNumbering {
             edges,
             lbl_to_block,
             args,
-            ret_type
+            ret_type,
         } = cfg;
         self.args = args.iter().map(|arg| arg.name.clone()).collect();
         self.before_pass();

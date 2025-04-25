@@ -199,7 +199,7 @@ impl DeadCodeElim {
             edges,
             lbl_to_block,
             args,
-            ret_type
+            ret_type,
         } = cfg;
 
         self.cfg = self.remove_unused_iter(cfg)

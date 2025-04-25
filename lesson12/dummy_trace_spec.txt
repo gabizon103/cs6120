@@ -1,0 +1,114 @@
+[
+    Constant {
+        dest: "one",
+        op: Const,
+        pos: None,
+        const_type: Int,
+        value: Int(
+            1,
+        ),
+    },
+    Value {
+        args: [
+            "x",
+            "one",
+        ],
+        dest: "y",
+        funcs: [],
+        labels: [],
+        op: Add,
+        pos: None,
+        op_type: Int,
+    },
+    Constant {
+        dest: "z",
+        op: Const,
+        pos: None,
+        const_type: Int,
+        value: Int(
+            0,
+        ),
+    },
+    Constant {
+        dest: "hunnit",
+        op: Const,
+        pos: None,
+        const_type: Int,
+        value: Int(
+            100,
+        ),
+    },
+    Value {
+        args: [
+            "x",
+            "hunnit",
+        ],
+        dest: "cond",
+        funcs: [],
+        labels: [],
+        op: Lt,
+        pos: None,
+        op_type: Bool,
+    },
+    Effect {
+        args: [
+            "cond",
+        ],
+        funcs: [],
+        labels: [
+            "quit_trace",
+        ],
+        op: Guard,
+        pos: None,
+    },
+    Constant {
+        dest: "one",
+        op: Const,
+        pos: None,
+        const_type: Int,
+        value: Int(
+            1,
+        ),
+    },
+    Value {
+        args: [
+            "a",
+            "one",
+        ],
+        dest: "s",
+        funcs: [],
+        labels: [],
+        op: Sub,
+        pos: None,
+        op_type: Int,
+    },
+    Value {
+        args: [
+            "s",
+        ],
+        dest: "z",
+        funcs: [],
+        labels: [],
+        op: Id,
+        pos: None,
+        op_type: Int,
+    },
+    Effect {
+        args: [],
+        funcs: [],
+        labels: [
+            "return",
+        ],
+        op: Jump,
+        pos: None,
+    },
+    Effect {
+        args: [
+            "z",
+        ],
+        funcs: [],
+        labels: [],
+        op: Print,
+        pos: None,
+    },
+]

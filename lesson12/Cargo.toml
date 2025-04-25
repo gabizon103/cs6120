@@ -9,3 +9,4 @@ argh.workspace = true
 bril-rs.workspace = true
 serde_json.workspace = true
 serde = "1.0.219"
+lesson2.workspace = true
