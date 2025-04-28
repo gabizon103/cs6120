@@ -174,7 +174,7 @@ impl std::fmt::Display for ControlFlow {
     }
 }
 
-#[derive(Default, Serialize, Deserialize)]
+#[derive(Default, Serialize, Deserialize, Clone)]
 pub struct CFGProgram {
     pub functions: Vec<ControlFlow>,
 }
